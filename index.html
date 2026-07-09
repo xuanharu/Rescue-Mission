@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rescue Mission</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Background Layer -->
+  <div class="bg-layer">
+    <img src="img/main_page/main_page.png" alt="" class="bg-img bg-desktop" aria-hidden="true">
+    <img src="img/main_page/main_page_verticle.png" alt="" class="bg-img bg-mobile" aria-hidden="true">
+    <div class="bg-glow" aria-hidden="true"></div>
+    <div class="stars-container" id="starsContainer" aria-hidden="true"></div>
+    <div class="particles-container" id="particlesContainer" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+  </div>
+
+  <!-- Main Menu -->
+  <main class="menu-container">
+    <div class="logo-wrapper">
+      <img src="img/main_page/logo.png" alt="Rescue Mission Logo" class="logo" onerror="this.style.display='none'">
+    </div>
+
+    <nav class="menu-buttons" aria-label="Main menu">
+      <button class="menu-btn" data-action="start" aria-label="Start Game">
+        <img src="img/main_page/button.png" alt="" class="btn-frame" aria-hidden="true">
+        <img src="img/main_page/start_text.png" alt="Start" class="btn-text">
+      </button>
+
+      <button class="menu-btn" data-action="save" aria-label="Save Menu">
+        <img src="img/main_page/button.png" alt="" class="btn-frame" aria-hidden="true">
+        <img src="img/main_page/save_text.png" alt="Save" class="btn-text">
+      </button>
+
+      <button class="menu-btn" data-action="equipments" aria-label="Equipment Menu">
+        <img src="img/main_page/button.png" alt="" class="btn-frame" aria-hidden="true">
+        <img src="img/main_page/equipments_text.png" alt="Equipments" class="btn-text">
+      </button>
+    </nav>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
