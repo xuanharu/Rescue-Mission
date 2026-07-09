@@ -137,7 +137,7 @@ const chapter1 = [{
         background: "../img/chapter_1/classroom.webp",
 
         characters: [{
-                image: "../img/character/teacher_teaching_normal.webp",
+                image: "../img/character/teacher_teaching_disappoint.webp",
                 position: "left"
             },
             {
@@ -159,7 +159,7 @@ const chapter1 = [{
         background: "../img/chapter_1/classroom.webp",
 
         characters: [{
-                image: "../img/character/teacher_teaching_normal.webp",
+                image: "../img/character/teacher_teaching_disappoint.webp",
                 position: "left"
             },
             {
@@ -198,7 +198,7 @@ const chapter1 = [{
         background: "../img/chapter_1/classroom.webp",
 
         characters: [{
-                image: "../img/character/teacher_teaching_normal.webp",
+                image: "../img/character/teacher_teaching_disappoint.webp",
                 position: "left"
             },
             {
