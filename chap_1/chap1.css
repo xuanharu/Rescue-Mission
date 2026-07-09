@@ -190,22 +190,23 @@ html, body {
   object-position: bottom center;
   transition: all 0.5s ease;
   filter: drop-shadow(0 0 10px rgba(76, 200, 255, 0.2));
+  transform: translate(var(--char-x, 0), 0);
 }
 
 .character.left {
   left: 22%;
-  transform: translateX(-50%);
+  --char-x: -50%;
 }
 
 .character.center {
   left: 50%;
-  transform: translateX(-50%);
+  --char-x: -50%;
 }
 
 .character.right {
   right: 22%;
   left: auto;
-  transform: translateX(50%);
+  --char-x: 50%;
 }
 
 /* --- Dialogue Container --- */
@@ -394,9 +395,11 @@ html, body {
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
-  20%, 40%, 60%, 80% { transform: translateX(4px); }
+   0%, 100% { transform: translate(var(--char-x, 0), 0); }
+   20% { transform: translate(calc(var(--char-x, 0) - 2px), 0); }
+   40% { transform: translate(calc(var(--char-x, 0) + 2px), 0); }
+   60% { transform: translate(calc(var(--char-x, 0) - 2px), 0); }
+   80% { transform: translate(calc(var(--char-x, 0) + 1px), 0); }
 }
 
 @keyframes zoomIn {
@@ -405,8 +408,8 @@ html, body {
 }
 
 @keyframes idle {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+   0%, 100% { transform: translate(var(--char-x, 0), 0); }
+   50% { transform: translate(var(--char-x, 0), -6px); }
 }
 
 /* Animation Classes */
@@ -501,13 +504,13 @@ html, body {
 
   .character.left {
     left: 18%;
-    transform: translateX(-50%);
+    --char-x: -50%;
   }
 
   .character.right {
     right: 18%;
     left: auto;
-    transform: translateX(50%);
+    --char-x: 50%;
   }
 
   .dialogue-container {

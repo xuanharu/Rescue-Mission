@@ -7,7 +7,25 @@ document.addEventListener('DOMContentLoaded', () => {
   initParticles();
   initFlyingStars();
   initButtons();
+  initBackgroundMusic();
 });
+
+/* --- Background Music (autoplay, no UI) --- */
+function initBackgroundMusic() {
+  const music = document.getElementById('bgMusic');
+  if (!music) return;
+
+  const tryPlay = () => {
+    music.play().catch(() => {});
+  };
+
+  tryPlay();
+
+  // Fallback: start on first user interaction (browsers may block autoplay)
+  ['click', 'keydown', 'touchstart'].forEach(evt => {
+    document.addEventListener(evt, tryPlay, { once: true });
+  });
+}
 
 /* --- Background Effects --- */
 function initStars() {
