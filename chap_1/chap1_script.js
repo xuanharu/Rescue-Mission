@@ -16,7 +16,7 @@ const chapter1 = [{
         background: "../img/chapter_1/classroom.jpg",
 
         characters: [{
-            image: "../img/character/teacher_teaching_normal.png",
+            image: "../img/character/teacher_teaching_normal_1.png",
             position: "center"
         }],
 
@@ -174,7 +174,7 @@ const chapter1 = [{
 
         speaker: "Thầy John",
 
-        text: "Em là một cậu bé thông minh. Nhưng em chưa bao giờ thật sự nghiêm túc trong việc học."
+        text: "Em là một đứa trẻ thông minh. Nhưng em chưa bao giờ thật sự nghiêm túc trong việc học."
     },
 
     {
@@ -244,7 +244,7 @@ const chapter1 = [{
 
         speaker: "",
 
-        text: "Sau giờ học, cậu bé lặng lẽ bước trên con đường về nhà."
+        text: "Sau giờ học, tôi lặng lẽ bước trên con đường về nhà."
     },
 
     {
@@ -295,7 +295,7 @@ const chapter1 = [{
 
         speaker: "",
 
-        text: "Cậu tiếp tục bước đi mà không hề biết rằng cuộc sống của mình sắp thay đổi mãi mãi..."
+        text: "Tôi tiếp tục bước đi mà không hề biết rằng cuộc sống của mình sắp thay đổi mãi mãi..."
     }
 ];
 

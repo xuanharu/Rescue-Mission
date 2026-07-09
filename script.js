@@ -131,9 +131,15 @@ function initButtons() {
 
 function handleButtonClick(action) {
   switch (action) {
-    case 'start':
-      console.log('Start Game');
+    case 'start': {
+      const save = loadSave();
+      if (save && save.character && save.name) {
+        window.location.href = save.current || 'chap_1/chap1.html';
+      } else {
+        window.location.href = 'chap_0/chap0.html';
+      }
       break;
+    }
     case 'save':
       console.log('Open Save Menu');
       break;
@@ -142,5 +148,14 @@ function handleButtonClick(action) {
       break;
     default:
       console.log('Unknown action:', action);
+  }
+}
+
+function loadSave() {
+  try {
+    const raw = localStorage.getItem('rescueMission_save');
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    return null;
   }
 }

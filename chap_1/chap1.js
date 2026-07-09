@@ -8,6 +8,8 @@
 let currentIndex = 0;
 let chapterData = [];
 let isAnimating = false;
+let playerGender = 'male';
+let playerName = 'Main';
 
 // ============================
 // DOM REFERENCES
@@ -34,17 +36,36 @@ function init() {
     return;
   }
 
-  chapterData = chapter1;
+  const save = loadSave();
+  if (save) {
+    if (save.character === 'female') playerGender = 'female';
+    if (save.name) playerName = save.name;
+  }
+
+  // Prepare chapter data: swap male character art for female players
+  chapterData = prepareChapter(chapter1, playerGender);
   currentIndex = 0;
 
   // Set coin value
-  coinValue.textContent = '100';
+  coinValue.textContent = (save && typeof save.money === 'number') ? save.money : '100';
 
   // Load first dialogue
   renderDialogue(currentIndex);
 
   // Bind events
   bindEvents();
+}
+
+// Build a player-aware copy of the chapter data
+function prepareChapter(data, gender) {
+  if (gender !== 'female') return data;
+  return data.map(step => ({
+    ...step,
+    characters: (step.characters || []).map(ch => ({
+      ...ch,
+      image: ch.image.replace('male_character', 'female_character')
+    }))
+  }));
 }
 
 // ============================
@@ -65,7 +86,7 @@ function renderDialogue(index) {
 
   // Update speaker
   if (data.speaker && data.type !== 'narration') {
-    speakerName.textContent = data.speaker;
+    speakerName.textContent = (data.speaker === 'Main') ? playerName : data.speaker;
     speakerName.style.display = 'block';
   } else {
     speakerName.style.display = 'none';
@@ -77,10 +98,14 @@ function renderDialogue(index) {
   // Update portrait (hide for narration)
   if (data.type === 'narration' || !data.speaker) {
     speakerPortrait.style.display = 'none';
-    } else {
-        speakerPortrait.style.display = 'block';
-        speakerPortrait.src = (typeof speakerPortraits !== 'undefined' && speakerPortraits[data.speaker]) ? speakerPortraits[data.speaker] : '';
+  } else {
+    speakerPortrait.style.display = 'block';
+    let portrait = (typeof speakerPortraits !== 'undefined' && speakerPortraits[data.speaker]) ? speakerPortraits[data.speaker] : '';
+    if (data.speaker === 'Main' && playerGender === 'female') {
+      portrait = '../img/character/portrait_female_character.png';
     }
+    speakerPortrait.src = portrait;
+  }
 
   // Render background with fade
   renderBackground(data.background);
@@ -198,9 +223,7 @@ function bindEvents() {
     console.log('Close');
   });
 
-  saveBtn.addEventListener('click', () => {
-    console.log('Save');
-  });
+  saveBtn.addEventListener('click', saveGame);
 
   homeBtn.addEventListener('click', () => {
     window.location.href = '../index.html';
@@ -208,6 +231,62 @@ function bindEvents() {
 }
 
 // ============================
+// SAVE GAME
+// ============================
+const SAVE_KEY = 'rescueMission_save';
+
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function saveGame() {
+  const save = loadSave() || {};
+
+  save.current = 'chap_1/chap1.html';
+  if (typeof save.money === 'undefined') save.money = 100;
+  if (!Array.isArray(save.skill)) save.skill = [];
+
+  try {
+    localStorage.setItem(SAVE_KEY, JSON.stringify(save));
+    showSaveFeedback();
+  } catch (e) {
+    console.error('Failed to save game:', e);
+  }
+}
+
+function showSaveFeedback() {
+  const original = saveBtn.textContent;
+  saveBtn.textContent = 'Đã lưu ✓';
+  setTimeout(() => {
+    saveBtn.textContent = original;
+  }, 1500);
+}
+
+// ============================
 // START
 // ============================
 document.addEventListener('DOMContentLoaded', init);
+initBackgroundMusic();
+
+// ============================
+// BACKGROUND MUSIC (autoplay, no UI)
+// ============================
+function initBackgroundMusic() {
+  const music = document.getElementById('bgMusic');
+  if (!music) return;
+
+  const tryPlay = () => {
+    music.play().catch(() => {});
+  };
+
+  tryPlay();
+
+  ['click', 'keydown', 'touchstart'].forEach(evt => {
+    document.addEventListener(evt, tryPlay, { once: true });
+  });
+}
