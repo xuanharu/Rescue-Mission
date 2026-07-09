@@ -281,8 +281,10 @@ function showSaveFeedback() {
 // ============================
 // START
 // ============================
-document.addEventListener('DOMContentLoaded', init);
-initBackgroundMusic();
+document.addEventListener('DOMContentLoaded', () => {
+    init();
+    initBackgroundMusic();
+});
 
 // ============================
 // BACKGROUND MUSIC (autoplay, no UI)

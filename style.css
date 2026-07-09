@@ -593,3 +593,32 @@ Narration
         transform: translateX(0);
     }
 }
+
+
+/* ===========================
+Reset Toast (Save button)
+=========================== */
+
+.reset-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 8%;
+    transform: translate(-50%, 20px);
+    z-index: 10;
+    padding: 0.8rem 1.6rem;
+    border-radius: 999px;
+    background: rgba(5, 15, 35, 0.9);
+    border: 2px solid var(--glow-color);
+    color: #fff;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    box-shadow: 0 0 18px rgba(76, 200, 255, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.reset-toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}

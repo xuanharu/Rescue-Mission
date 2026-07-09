@@ -141,7 +141,7 @@ function handleButtonClick(action) {
       break;
     }
     case 'save':
-      console.log('Open Save Menu');
+      resetGame();
       break;
     case 'equipments':
       console.log('Open Equipment Menu');
@@ -158,4 +158,30 @@ function loadSave() {
   } catch (e) {
     return null;
   }
+}
+
+function resetGame() {
+  localStorage.removeItem('rescueMission_save');
+  const fresh = { money: 100, skill: [] };
+  try {
+    localStorage.setItem('rescueMission_save', JSON.stringify(fresh));
+  } catch (e) {
+    console.error('Failed to reset save:', e);
+  }
+  console.log('Save data cleared. Coin reset to 100.');
+  showResetFeedback();
+}
+
+function showResetFeedback() {
+  let toast = document.getElementById('resetToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'resetToast';
+    toast.className = 'reset-toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = 'Đã đặt lại: Xu = 100';
+  toast.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => toast.classList.remove('show'), 1500);
 }
