@@ -30,7 +30,7 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/main_city_war.webp",
+        background: "../img/chapter_1/main_city_destroyed.webp",
 
         characters: [],
 
@@ -40,11 +40,11 @@ const chapter1 = [{
 
         speaker: "",
 
-        text: "Nhiều người lính bị thương đang nằm trên mặt đất."
+        text: "ẦMMMMMM...! Hàng loạt bom rải xuống, những tòa nhà chọc trời đổ sụp trong chốc lát."
     },
 
     {
-        background: "../img/chapter_1/main_city_war.webp",
+        background: "../img/chapter_1/main_city_destroyed.webp",
 
         characters: [{
             image: "../img/character/commander_normal.webp",
@@ -61,7 +61,7 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/main_city_war.webp",
+        background: "../img/chapter_1/main_city_destroyed.webp",
 
         characters: [{
             image: "../img/character/commander_normal.webp",
@@ -78,7 +78,7 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/main_city_war.webp",
+        background: "../img/chapter_1/main_city_destroyed.webp",
 
         characters: [{
             image: "../img/character/medic_normal.webp",
@@ -95,7 +95,7 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/main_city_war.webp",
+        background: "../img/chapter_1/main_city_destroyed.webp",
 
         characters: [{
             image: "../img/character/soldier_injured.webp",
@@ -112,7 +112,7 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/main_city_war.webp",
+        background: "../img/chapter_1/main_city_destroyed.webp",
 
         characters: [{
             image: "../img/character/soldier_injured.webp",
@@ -129,12 +129,9 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/main_city_war.webp",
+        background: "../img/chapter_1/main_city_destroyed.webp",
 
-        characters: [{
-            image: "../img/character/soldier_injured.webp",
-            position: "center"
-        }],
+        characters: [],
 
         animation: "flash",
 
@@ -142,7 +139,7 @@ const chapter1 = [{
 
         speaker: "",
 
-        text: "Chiếc camera trên vai người lính bất ngờ sáng lên."
+        text: "Chiếc camera trên vai 1 người lính đã ngã gục bất ngờ sáng lên."
     },
 
     {
