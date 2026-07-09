@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rescue Mission - Chapter 1</title>
+
+    <link rel="stylesheet" href="chap1.css">
+</head>
+
+<body>
+
+    <div class="game-container">
+
+        <!-- =========================
+         Left Navigation
+    ========================== -->
+
+        <aside class="nav-panel">
+
+            <button id="closeBtn" class="nav-btn" title="Close">
+            ✕
+        </button>
+
+            <button id="saveBtn" class="nav-btn" title="Save">
+            💾
+        </button>
+
+            <button id="homeBtn" class="nav-btn" title="Home">
+            🏠
+        </button>
+
+        </aside>
+
+
+        <!-- =========================
+         Main Area
+    ========================== -->
+
+        <main class="main-content">
+
+            <!-- Coin -->
+
+            <div class="coin-display">
+
+                <img src="../img/ui/coin.png" class="coin-icon" alt="Coin">
+
+                <span id="coinValue">100</span>
+
+            </div>
+
+
+            <!-- =====================
+             Story Scene
+        ====================== -->
+
+            <section class="story-scene">
+
+                <!-- Background -->
+
+                <div class="background-layer">
+
+                    <img id="storyBackground" class="story-background" src="" alt="Background">
+
+                </div>
+
+
+                <!-- Overlay -->
+
+                <div id="sceneOverlay" class="scene-overlay">
+                </div>
+
+
+                <!-- Characters -->
+
+                <div id="characterLayer" class="character-layer">
+
+                    <!-- JS injects characters here -->
+
+                </div>
+
+            </section>
+
+
+            <!-- =====================
+             Dialogue
+        ====================== -->
+
+            <section class="dialogue-container">
+
+                <div id="dialogueBox" class="dialogue-box speech">
+
+                    <!-- Portrait -->
+
+                    <div class="portrait-container">
+
+                        <img id="speakerPortrait" class="speaker-portrait" src="" alt="Portrait">
+
+                    </div>
+
+
+                    <!-- Text -->
+
+                    <div class="dialogue-content">
+
+                        <div id="speakerName" class="speaker-name">
+
+                            Father
+
+                        </div>
+
+                        <div id="dialogueText" class="dialogue-text">
+
+                            Dialogue goes here...
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Controls -->
+
+                <div class="dialogue-controls">
+
+                    <button id="previousBtn" class="dialogue-btn">
+
+                    ← Quay lại
+
+                </button>
+
+
+                    <button id="nextBtn" class="dialogue-btn">
+
+                    Tiếp tục →
+
+                </button>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <script src="chap1_script.js"></script>
+    <script src="chap1.js"></script>
+
+</body>
+
+</html>
