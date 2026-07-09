@@ -191,7 +191,7 @@ const chapter1 = [{
 
         speaker: "Main",
 
-        text: "...Em xin lỗi."
+        text: "...Em xin lỗi ạ."
     },
 
     {
@@ -295,8 +295,10 @@ const chapter1 = [{
 
         speaker: "",
 
-        text: "Tôi tiếp tục bước đi mà không hề biết rằng cuộc sống của mình sắp thay đổi mãi mãi..."
-    }
+        text: "Tôi tiếp tục bước đi mà không hề biết rằng cuộc sống của mình sắp thay đổi mãi mãi...",
+        branch: '../chap_1/chap1-1.html'
+    },
+
 ];
 
 const speakerPortraits = {

@@ -22,6 +22,7 @@ const speakerPortrait = document.getElementById('speakerPortrait');
 const dialogueText = document.getElementById('dialogueText');
 const previousBtn = document.getElementById('previousBtn');
 const nextBtn = document.getElementById('nextBtn');
+const branchBtn = document.getElementById('branchBtn');
 const coinValue = document.getElementById('coinValue');
 const closeBtn = document.getElementById('closeBtn');
 const saveBtn = document.getElementById('saveBtn');
@@ -113,8 +114,18 @@ function renderDialogue(index) {
     // Render characters
     renderCharacters(data.characters, data.animation);
 
-    // Update button states
-    updateButtonStates();
+    // Branch button
+    if (data.branch) {
+        branchBtn.style.display = 'inline-block';
+        nextBtn.disabled = true;
+        branchBtn.disabled = false;
+        branchBtn.onclick = () => {
+            window.location.href = data.branch;
+        };
+    } else {
+        branchBtn.style.display = 'none';
+        updateButtonStates();
+    }
 
     // Reset animation lock after transition
     setTimeout(() => {
