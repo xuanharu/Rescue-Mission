@@ -1,5 +1,5 @@
 const chapter1 = [{
-        background: "../img/chapter_1/classroom.jpg",
+        background: "../img/chapter_1/classroom.webp",
 
         characters: [],
 
@@ -13,10 +13,10 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/classroom.jpg",
+        background: "../img/chapter_1/classroom.webp",
 
         characters: [{
-            image: "../img/character/teacher_teaching_normal_1.png",
+            image: "../img/character/teacher_teaching_normal_1.webp",
             position: "center"
         }],
 
@@ -30,10 +30,10 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/classroom.jpg",
+        background: "../img/chapter_1/classroom.webp",
 
         characters: [{
-            image: "../img/character/teacher_teaching_normal.png",
+            image: "../img/character/teacher_teaching_normal.webp",
             position: "center"
         }],
 
@@ -47,10 +47,10 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/classroom.jpg",
+        background: "../img/chapter_1/classroom.webp",
 
         characters: [{
-            image: "../img/character/teacher_teaching_normal.png",
+            image: "../img/character/teacher_teaching_normal.webp",
             position: "center"
         }],
 
@@ -64,7 +64,7 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/classroom.jpg",
+        background: "../img/chapter_1/classroom.webp",
 
         characters: [],
 
@@ -78,10 +78,10 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/classroom.jpg",
+        background: "../img/chapter_1/classroom.webp",
 
         characters: [{
-            image: "../img/character/teacher_teaching_normal.png",
+            image: "../img/character/teacher_teaching_normal.webp",
             position: "center"
         }],
 
@@ -95,10 +95,10 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/classroom.jpg",
+        background: "../img/chapter_1/classroom.webp",
 
         characters: [{
-            image: "../img/character/teacher_teaching_badgrade_1.png",
+            image: "../img/character/teacher_teaching_badgrade_1.webp",
             position: "center"
         }],
 
@@ -112,14 +112,14 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/classroom.jpg",
+        background: "../img/chapter_1/classroom.webp",
 
         characters: [{
-                image: "../img/character/teacher_teaching_normal.png",
+                image: "../img/character/teacher_teaching_normal.webp",
                 position: "left"
             },
             {
-                image: "../img/character/male_character_uniform_normal.png",
+                image: "../img/character/male_character_uniform_normal.webp",
                 position: "right"
             }
         ],
@@ -134,14 +134,14 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/classroom.jpg",
+        background: "../img/chapter_1/classroom.webp",
 
         characters: [{
-                image: "../img/character/teacher_teaching_normal.png",
+                image: "../img/character/teacher_teaching_normal.webp",
                 position: "left"
             },
             {
-                image: "../img/character/male_character_uniform_normal.png",
+                image: "../img/character/male_character_uniform_normal.webp",
                 position: "right"
             }
         ],
@@ -156,14 +156,14 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/classroom.jpg",
+        background: "../img/chapter_1/classroom.webp",
 
         characters: [{
-                image: "../img/character/teacher_teaching_normal.png",
+                image: "../img/character/teacher_teaching_normal.webp",
                 position: "left"
             },
             {
-                image: "../img/character/male_character_uniform_normal.png",
+                image: "../img/character/male_character_uniform_normal.webp",
                 position: "right"
             }
         ],
@@ -178,10 +178,10 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/classroom.jpg",
+        background: "../img/chapter_1/classroom.webp",
 
         characters: [{
-            image: "../img/character/male_character_uniform_normal.png",
+            image: "../img/character/male_character_uniform_normal.webp",
             position: "center"
         }],
 
@@ -195,14 +195,14 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/classroom.jpg",
+        background: "../img/chapter_1/classroom.webp",
 
         characters: [{
-                image: "../img/character/teacher_teaching_normal.png",
+                image: "../img/character/teacher_teaching_normal.webp",
                 position: "left"
             },
             {
-                image: "../img/character/male_character_uniform_normal.png",
+                image: "../img/character/male_character_uniform_normal.webp",
                 position: "right"
             }
         ],
@@ -217,7 +217,7 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/classroom.jpg",
+        background: "../img/chapter_1/classroom.webp",
 
         characters: [],
 
@@ -231,10 +231,10 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/future_street.jpg",
+        background: "../img/chapter_1/future_street.webp",
 
         characters: [{
-            image: "../img/character/male_character_uniform_normal.png",
+            image: "../img/character/male_character_uniform_normal.webp",
             position: "center"
         }],
 
@@ -248,10 +248,10 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/future_street.jpg",
+        background: "../img/chapter_1/future_street.webp",
 
         characters: [{
-            image: "../img/character/male_character_uniform_normal.png",
+            image: "../img/character/male_character_uniform_normal.webp",
             position: "center"
         }],
 
@@ -265,10 +265,10 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/future_street.jpg",
+        background: "../img/chapter_1/future_street.webp",
 
         characters: [{
-            image: "../img/character/male_character_uniform_normal.png",
+            image: "../img/character/male_character_uniform_normal.webp",
             position: "center"
         }],
 
@@ -282,10 +282,10 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/future_street.jpg",
+        background: "../img/chapter_1/future_street.webp",
 
         characters: [{
-            image: "../img/character/male_character_uniform_normal.png",
+            image: "../img/character/male_character_uniform_normal.webp",
             position: "center"
         }],
 
@@ -300,7 +300,7 @@ const chapter1 = [{
 ];
 
 const speakerPortraits = {
-    "Main": "../img/character/portrait_male_character.png",
-    "Thầy John": "../img/character/portrait_teacher.png",
-    "Học sinh": "../img/character/portrait_student.png"
+    "Main": "../img/character/portrait_male_character.webp",
+    "Thầy John": "../img/character/portrait_teacher.webp",
+    "Học sinh": "../img/character/portrait_student.webp"
 };

@@ -31,203 +31,203 @@ const homeBtn = document.getElementById('homeBtn');
 // INITIALIZATION
 // ============================
 function init() {
-  if (typeof chapter1 === 'undefined') {
-    console.error('chapter1 data not found. Make sure chap1_script.js is loaded before chap1.js');
-    return;
-  }
+    if (typeof chapter1 === 'undefined') {
+        console.error('chapter1 data not found. Make sure chap1_script.js is loaded before chap1.js');
+        return;
+    }
 
-  const save = loadSave();
-  if (save) {
-    if (save.character === 'female') playerGender = 'female';
-    if (save.name) playerName = save.name;
-  }
+    const save = loadSave();
+    if (save) {
+        if (save.character === 'female') playerGender = 'female';
+        if (save.name) playerName = save.name;
+    }
 
-  // Prepare chapter data: swap male character art for female players
-  chapterData = prepareChapter(chapter1, playerGender);
-  currentIndex = 0;
+    // Prepare chapter data: swap male character art for female players
+    chapterData = prepareChapter(chapter1, playerGender);
+    currentIndex = 0;
 
-  // Set coin value
-  coinValue.textContent = (save && typeof save.money === 'number') ? save.money : '100';
+    // Set coin value
+    coinValue.textContent = (save && typeof save.money === 'number') ? save.money : '100';
 
-  // Load first dialogue
-  renderDialogue(currentIndex);
+    // Load first dialogue
+    renderDialogue(currentIndex);
 
-  // Bind events
-  bindEvents();
+    // Bind events
+    bindEvents();
 }
 
 // Build a player-aware copy of the chapter data
 function prepareChapter(data, gender) {
-  if (gender !== 'female') return data;
-  return data.map(step => ({
-    ...step,
-    characters: (step.characters || []).map(ch => ({
-      ...ch,
-      image: ch.image.replace('male_character', 'female_character')
-    }))
-  }));
+    if (gender !== 'female') return data;
+    return data.map(step => ({
+        ...step,
+        characters: (step.characters || []).map(ch => ({
+            ...ch,
+            image: ch.image.replace('male_character', 'female_character')
+        }))
+    }));
 }
 
 // ============================
 // RENDER FUNCTIONS
 // ============================
 function renderDialogue(index) {
-  if (isAnimating) return;
-  isAnimating = true;
+    if (isAnimating) return;
+    isAnimating = true;
 
-  const data = chapterData[index];
-  if (!data) {
-    isAnimating = false;
-    return;
-  }
-
-  // Update dialogue box type class
-  dialogueBox.className = 'dialogue-box ' + (data.type || 'speech');
-
-  // Update speaker
-  if (data.speaker && data.type !== 'narration') {
-    speakerName.textContent = (data.speaker === 'Main') ? playerName : data.speaker;
-    speakerName.style.display = 'block';
-  } else {
-    speakerName.style.display = 'none';
-  }
-
-  // Update dialogue text
-  dialogueText.textContent = data.text;
-
-  // Update portrait (hide for narration)
-  if (data.type === 'narration' || !data.speaker) {
-    speakerPortrait.style.display = 'none';
-  } else {
-    speakerPortrait.style.display = 'block';
-    let portrait = (typeof speakerPortraits !== 'undefined' && speakerPortraits[data.speaker]) ? speakerPortraits[data.speaker] : '';
-    if (data.speaker === 'Main' && playerGender === 'female') {
-      portrait = '../img/character/portrait_female_character.png';
+    const data = chapterData[index];
+    if (!data) {
+        isAnimating = false;
+        return;
     }
-    speakerPortrait.src = portrait;
-  }
 
-  // Render background with fade
-  renderBackground(data.background);
+    // Update dialogue box type class
+    dialogueBox.className = 'dialogue-box ' + (data.type || 'speech');
 
-  // Render characters
-  renderCharacters(data.characters, data.animation);
+    // Update speaker
+    if (data.speaker && data.type !== 'narration') {
+        speakerName.textContent = (data.speaker === 'Main') ? playerName : data.speaker;
+        speakerName.style.display = 'block';
+    } else {
+        speakerName.style.display = 'none';
+    }
 
-  // Update button states
-  updateButtonStates();
+    // Update dialogue text
+    dialogueText.textContent = data.text;
 
-  // Reset animation lock after transition
-  setTimeout(() => {
-    isAnimating = false;
-  }, 500);
+    // Update portrait (hide for narration)
+    if (data.type === 'narration' || !data.speaker) {
+        speakerPortrait.style.display = 'none';
+    } else {
+        speakerPortrait.style.display = 'block';
+        let portrait = (typeof speakerPortraits !== 'undefined' && speakerPortraits[data.speaker]) ? speakerPortraits[data.speaker] : '';
+        if (data.speaker === 'Main' && playerGender === 'female') {
+            portrait = '../img/character/portrait_female_character.webp';
+        }
+        speakerPortrait.src = portrait;
+    }
+
+    // Render background with fade
+    renderBackground(data.background);
+
+    // Render characters
+    renderCharacters(data.characters, data.animation);
+
+    // Update button states
+    updateButtonStates();
+
+    // Reset animation lock after transition
+    setTimeout(() => {
+        isAnimating = false;
+    }, 500);
 }
 
 function renderBackground(bgPath) {
-  if (!bgPath) return;
+    if (!bgPath) return;
 
-  // Fade out
-  storyBackground.classList.add('fade-out');
+    // Fade out
+    storyBackground.classList.add('fade-out');
 
-  setTimeout(() => {
-    storyBackground.src = bgPath;
-    storyBackground.onload = () => {
-      storyBackground.classList.remove('fade-out');
-    };
-  }, 400);
+    setTimeout(() => {
+        storyBackground.src = bgPath;
+        storyBackground.onload = () => {
+            storyBackground.classList.remove('fade-out');
+        };
+    }, 400);
 }
 
 function renderCharacters(characters, animation) {
-  characterLayer.innerHTML = '';
+    characterLayer.innerHTML = '';
 
-  if (!characters || characters.length === 0) return;
+    if (!characters || characters.length === 0) return;
 
-  characters.forEach((char, i) => {
-    const img = document.createElement('img');
-    img.src = char.image;
-    img.alt = 'Character';
-    img.className = 'character ' + (char.position || 'center');
+    characters.forEach((char, i) => {
+        const img = document.createElement('img');
+        img.src = char.image;
+        img.alt = 'Character';
+        img.className = 'character ' + (char.position || 'center');
 
-    // Apply animation class if specified
-    if (animation) {
-      img.classList.add('anim-' + animation);
-    } else {
-      img.classList.add('anim-idle');
-    }
+        // Apply animation class if specified
+        if (animation) {
+            img.classList.add('anim-' + animation);
+        } else {
+            img.classList.add('anim-idle');
+        }
 
-    // Stagger character entrance
-    img.style.opacity = '0';
-    img.style.animationDelay = (i * 0.15) + 's';
+        // Stagger character entrance
+        img.style.opacity = '0';
+        img.style.animationDelay = (i * 0.15) + 's';
 
-    characterLayer.appendChild(img);
+        characterLayer.appendChild(img);
 
-    // Trigger entrance animation
-    setTimeout(() => {
-      img.style.opacity = '1';
-    }, 50);
-  });
+        // Trigger entrance animation
+        setTimeout(() => {
+            img.style.opacity = '1';
+        }, 50);
+    });
 }
 
 function updateButtonStates() {
-  previousBtn.disabled = currentIndex <= 0;
-  nextBtn.disabled = currentIndex >= chapterData.length - 1;
+    previousBtn.disabled = currentIndex <= 0;
+    nextBtn.disabled = currentIndex >= chapterData.length - 1;
 }
 
 // ============================
 // NAVIGATION
 // ============================
 function goNext() {
-  if (currentIndex < chapterData.length - 1) {
-    currentIndex++;
-    renderDialogue(currentIndex);
-  }
+    if (currentIndex < chapterData.length - 1) {
+        currentIndex++;
+        renderDialogue(currentIndex);
+    }
 }
 
 function goPrevious() {
-  if (currentIndex > 0) {
-    currentIndex--;
-    renderDialogue(currentIndex);
-  }
+    if (currentIndex > 0) {
+        currentIndex--;
+        renderDialogue(currentIndex);
+    }
 }
 
 // ============================
 // EVENT BINDING
 // ============================
 function bindEvents() {
-  // Next button
-  nextBtn.addEventListener('click', goNext);
+    // Next button
+    nextBtn.addEventListener('click', goNext);
 
-  // Previous button
-  previousBtn.addEventListener('click', goPrevious);
+    // Previous button
+    previousBtn.addEventListener('click', goPrevious);
 
-  // Keyboard controls
-  document.addEventListener('keydown', (e) => {
-    if (e.code === 'Space' || e.code === 'Enter') {
-      e.preventDefault();
-      goNext();
-    } else if (e.code === 'ArrowLeft') {
-      e.preventDefault();
-      goPrevious();
-    }
-  });
+    // Keyboard controls
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' || e.code === 'Enter') {
+            e.preventDefault();
+            goNext();
+        } else if (e.code === 'ArrowLeft') {
+            e.preventDefault();
+            goPrevious();
+        }
+    });
 
-  // Click dialogue box to advance
-  dialogueBox.addEventListener('click', (e) => {
-    // Prevent triggering if user is selecting text
-    if (window.getSelection && window.getSelection().toString().length === 0) {
-      goNext();
-    }
-  });
+    // Click dialogue box to advance
+    dialogueBox.addEventListener('click', (e) => {
+        // Prevent triggering if user is selecting text
+        if (window.getSelection && window.getSelection().toString().length === 0) {
+            goNext();
+        }
+    });
 
-  // Navigation buttons
-  closeBtn.addEventListener('click', () => {
-    console.log('Close');
-  });
+    // Navigation buttons
+    closeBtn.addEventListener('click', () => {
+        console.log('Close');
+    });
 
-  saveBtn.addEventListener('click', saveGame);
+    saveBtn.addEventListener('click', saveGame);
 
-  homeBtn.addEventListener('click', () => {
-    window.location.href = '../index.html';
-  });
+    homeBtn.addEventListener('click', () => {
+        window.location.href = '../index.html';
+    });
 }
 
 // ============================
@@ -236,35 +236,35 @@ function bindEvents() {
 const SAVE_KEY = 'rescueMission_save';
 
 function loadSave() {
-  try {
-    const raw = localStorage.getItem(SAVE_KEY);
-    return raw ? JSON.parse(raw) : null;
-  } catch (e) {
-    return null;
-  }
+    try {
+        const raw = localStorage.getItem(SAVE_KEY);
+        return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+        return null;
+    }
 }
 
 function saveGame() {
-  const save = loadSave() || {};
+    const save = loadSave() || {};
 
-  save.current = 'chap_1/chap1.html';
-  if (typeof save.money === 'undefined') save.money = 100;
-  if (!Array.isArray(save.skill)) save.skill = [];
+    save.current = 'chap_1/chap1.html';
+    if (typeof save.money === 'undefined') save.money = 100;
+    if (!Array.isArray(save.skill)) save.skill = [];
 
-  try {
-    localStorage.setItem(SAVE_KEY, JSON.stringify(save));
-    showSaveFeedback();
-  } catch (e) {
-    console.error('Failed to save game:', e);
-  }
+    try {
+        localStorage.setItem(SAVE_KEY, JSON.stringify(save));
+        showSaveFeedback();
+    } catch (e) {
+        console.error('Failed to save game:', e);
+    }
 }
 
 function showSaveFeedback() {
-  const original = saveBtn.textContent;
-  saveBtn.textContent = 'Đã lưu ✓';
-  setTimeout(() => {
-    saveBtn.textContent = original;
-  }, 1500);
+    const original = saveBtn.textContent;
+    saveBtn.textContent = 'Đã lưu ✓';
+    setTimeout(() => {
+        saveBtn.textContent = original;
+    }, 1500);
 }
 
 // ============================
@@ -277,16 +277,16 @@ initBackgroundMusic();
 // BACKGROUND MUSIC (autoplay, no UI)
 // ============================
 function initBackgroundMusic() {
-  const music = document.getElementById('bgMusic');
-  if (!music) return;
+    const music = document.getElementById('bgMusic');
+    if (!music) return;
 
-  const tryPlay = () => {
-    music.play().catch(() => {});
-  };
+    const tryPlay = () => {
+        music.play().catch(() => {});
+    };
 
-  tryPlay();
+    tryPlay();
 
-  ['click', 'keydown', 'touchstart'].forEach(evt => {
-    document.addEventListener(evt, tryPlay, { once: true });
-  });
+    ['click', 'keydown', 'touchstart'].forEach(evt => {
+        document.addEventListener(evt, tryPlay, { once: true });
+    });
 }
