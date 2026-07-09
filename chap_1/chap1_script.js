@@ -304,5 +304,5 @@ const chapter1 = [{
 const speakerPortraits = {
     "Main": "../img/character/portrait_male_character.webp",
     "Thầy John": "../img/character/portrait_teacher.webp",
-    "Học sinh": "../img/character/portrait_student.webp"
+    "Học sinh": "../img/character/portrait_people.webp"
 };
