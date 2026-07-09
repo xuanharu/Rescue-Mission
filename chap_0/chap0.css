@@ -19,8 +19,9 @@
 html,
 body {
     width: 100%;
-    height: 100%;
-    overflow: hidden;
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--bg-navy);
     color: var(--text-white);
@@ -462,16 +463,65 @@ body {
     }
 }
 
-/* --- Responsive --- */
+/* --- Responsive (fit on small screens, no scrolling) --- */
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+    .select-container {
+        padding: 1.2rem 1rem;
+        gap: 0.9rem;
+    }
+    .title {
+        font-size: clamp(1.4rem, 6vw, 2rem);
+        letter-spacing: 2px;
+    }
+    .subtitle {
+        font-size: 0.85rem;
+        margin-top: -0.3rem;
+    }
     .cards {
         gap: 1.2rem;
+        margin: 0.3rem 0;
     }
     .char-frame {
-        width: 130px;
+        width: clamp(110px, 36vw, 150px);
+        border-radius: 12px;
+    }
+    .char-label {
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+    }
+    .name-field {
+        width: min(320px, 85vw);
+        gap: 0.3rem;
+    }
+    .name-field label {
+        font-size: 0.75rem;
+    }
+    .name-field input {
+        padding: 0.6rem 0.9rem;
+        font-size: 0.95rem;
     }
     .save-btn {
-        padding: 0.7rem 2.4rem;
+        padding: 0.7rem 2.6rem;
+        font-size: 1rem;
+        letter-spacing: 2px;
+    }
+}
+
+@media (max-width: 360px) {
+    .char-frame {
+        width: clamp(96px, 40vw, 120px);
+    }
+    .save-btn {
+        padding: 0.65rem 2.2rem;
+    }
+}
+
+/* Safety net for very short screens so the Save button is always reachable */
+@media (max-height: 560px) {
+    .select-container {
+        justify-content: flex-start;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
     }
 }
