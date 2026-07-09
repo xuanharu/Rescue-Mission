@@ -231,7 +231,7 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/future_street.webp",
+        background: "../img/chapter_1/nothing.webp",
 
         characters: [{
             image: "../img/character/male_character_uniform_normal.webp",
@@ -248,7 +248,7 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/future_street.webp",
+        background: "../img/chapter_1/nothing.webp",
 
         characters: [{
             image: "../img/character/male_character_uniform_normal.webp",
@@ -265,7 +265,7 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/future_street.webp",
+        background: "../img/chapter_1/nothing.webp",
 
         characters: [{
             image: "../img/character/male_character_uniform_normal.webp",
