@@ -1,8 +1,8 @@
 const chapter1 = [{
-        background: "img/chapter_1/classroom.jpg",
+        background: "../img/chapter_1/classroom.jpg",
 
         characters: [{
-            image: "img/character/male_character_uniform_normal.jpg",
+            image: "../img/character/male_character_uniform_normal.png",
             position: "center"
         }],
 
@@ -13,10 +13,10 @@ const chapter1 = [{
     },
 
     {
-        background: "img/chapter_1/classroom.jpg",
+        background: "../img/chapter_1/classroom.jpg",
 
         characters: [{
-            image: "img/character/teacher_teaching_normal.jpg",
+            image: "../img/character/teacher_teaching_normal.png",
             position: "center"
         }],
 
@@ -30,14 +30,14 @@ const chapter1 = [{
     },
 
     {
-        background: "img/chapter_1/classroom.jpg",
+        background: "../img/chapter_1/classroom.jpg",
 
         characters: [{
-                image: "img/character/teacher_teaching_normal.jpg",
+                image: "../img/character/teacher_teaching_normal.png",
                 position: "left"
             },
             {
-                image: "img/character/robot_lvl2.jpg",
+                image: "../img/character/robot_lvl2.jpg",
                 position: "right"
             }
         ],
@@ -53,6 +53,6 @@ const chapter1 = [{
 ];
 
 const speakerPortraits = {
-    "Main": "img/character/portrait_male_character.png",
-    "Thầy John": "img/character/portrait_teacher.png"
+    "Main": "../img/character/portrait_male_character.png",
+    "Thầy John": "../img/character/portrait_teacher.png"
 };

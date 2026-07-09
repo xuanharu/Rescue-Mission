@@ -193,8 +193,8 @@ html, body {
 }
 
 .character.left {
-  left: 5%;
-  transform: translateX(0);
+  left: 22%;
+  transform: translateX(-50%);
 }
 
 .character.center {
@@ -203,9 +203,9 @@ html, body {
 }
 
 .character.right {
-  right: 5%;
+  right: 22%;
   left: auto;
-  transform: translateX(0);
+  transform: translateX(50%);
 }
 
 /* --- Dialogue Container --- */
@@ -500,11 +500,14 @@ html, body {
   }
 
   .character.left {
-    left: 0;
+    left: 18%;
+    transform: translateX(-50%);
   }
 
   .character.right {
-    right: 0;
+    right: 18%;
+    left: auto;
+    transform: translateX(50%);
   }
 
   .dialogue-container {
