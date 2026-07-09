@@ -5,6 +5,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   initStars();
   initParticles();
+  initFlyingStars();
   initButtons();
 });
 
@@ -64,6 +65,37 @@ function initParticles() {
     particle.style.setProperty('--move-y', `${moveY}px`);
 
     container.appendChild(particle);
+  }
+}
+
+function initFlyingStars() {
+  const container = document.getElementById('flyingStars');
+  if (!container) return;
+
+  const flyingCount = 25;
+
+  for (let i = 0; i < flyingCount; i++) {
+    const star = document.createElement('div');
+    star.classList.add('flying-star');
+
+    const size = Math.random() * 3 + 2;
+    const startX = Math.random() * 100;
+    const startY = Math.random() * 100;
+    const duration = Math.random() * 8 + 6;
+    const delay = Math.random() * 10;
+    const moveX = (Math.random() - 0.5) * 120;
+    const moveY = (Math.random() - 0.5) * 120;
+
+    star.style.width = `${size}px`;
+    star.style.height = `${size}px`;
+    star.style.left = `${startX}%`;
+    star.style.top = `${startY}%`;
+    star.style.setProperty('--duration', `${duration}s`);
+    star.style.setProperty('--delay', `${delay}s`);
+    star.style.setProperty('--move-x', `${moveX}px`);
+    star.style.setProperty('--move-y', `${moveY}px`);
+
+    container.appendChild(star);
   }
 }
 

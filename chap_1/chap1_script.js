@@ -24,9 +24,9 @@ const chapter1 = [{
 
         type: "thought",
 
-        speaker: "Alex",
+        speaker: "Main",
 
-        text: "Why are the lights off?"
+        text: "Thật chán quá đi, mình muốn về nhà ngay bây giờ!"
     },
 
     {
@@ -46,8 +46,13 @@ const chapter1 = [{
 
         type: "speech",
 
-        speaker: "Father",
+        speaker: "Thầy John",
 
-        text: "Don't let them finish my research!"
+        text: "Em lại bị điểm kém môn Toán rồi à? Học hành thế này thì làm sao mà thi đỗ được!"
     }
 ];
+
+const speakerPortraits = {
+    "Main": "img/character/portrait_male_character.png",
+    "Thầy John": "img/character/portrait_teacher.png"
+};

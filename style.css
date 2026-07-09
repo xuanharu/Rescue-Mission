@@ -162,6 +162,80 @@ body {
     }
 }
 
+/* --- Star Dust Layer --- */
+
+.star-dust-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.star-dust {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: flyStarDust var(--duration) linear infinite;
+    animation-delay: var(--delay);
+    opacity: 0;
+}
+
+@keyframes flyStarDust {
+    0% {
+        transform: translate(0, 0) scale(0.5);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.8;
+    }
+    90% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translate(var(--move-x), var(--move-y)) scale(1.2);
+        opacity: 0;
+    }
+}
+
+
+/* --- Flying Stars Layer (z-index: 2) --- */
+
+.flying-stars-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.flying-star {
+    position: absolute;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(76, 200, 255, 0.8);
+    animation: flyAcross var(--duration) linear infinite;
+    animation-delay: var(--delay);
+    opacity: 0;
+}
+
+@keyframes flyAcross {
+    0% {
+        transform: translate(0, 0) scale(0.6);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(var(--move-x), var(--move-y)) scale(1.2);
+        opacity: 0;
+    }
+}
+
 
 /* --- Menu Container --- */
 

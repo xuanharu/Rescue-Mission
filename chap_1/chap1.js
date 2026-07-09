@@ -77,11 +77,10 @@ function renderDialogue(index) {
   // Update portrait (hide for narration)
   if (data.type === 'narration' || !data.speaker) {
     speakerPortrait.style.display = 'none';
-  } else {
-    speakerPortrait.style.display = 'block';
-    // Portrait could be linked to character images here
-    speakerPortrait.src = '';
-  }
+    } else {
+        speakerPortrait.style.display = 'block';
+        speakerPortrait.src = (typeof speakerPortraits !== 'undefined' && speakerPortraits[data.speaker]) ? speakerPortraits[data.speaker] : '';
+    }
 
   // Render background with fade
   renderBackground(data.background);
