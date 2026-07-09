@@ -10,6 +10,7 @@ let chapterData = [];
 let isAnimating = false;
 let playerGender = 'male';
 let playerName = 'Main';
+let choiceActive = false;
 
 // ============================
 // DOM REFERENCES
@@ -114,16 +115,24 @@ function renderDialogue(index) {
     // Render characters
     renderCharacters(data.characters, data.animation);
 
-    // Branch button
-    if (data.branch) {
+    // Branch / Choice buttons
+    if (data.choices && data.choices.length) {
+        choiceActive = true;
+        branchBtn.style.display = 'none';
+        nextBtn.disabled = true;
+        previousBtn.disabled = true;
+        renderChoices(data.choices);
+    } else if (data.branch) {
+        choiceActive = false;
         branchBtn.style.display = 'inline-block';
         nextBtn.disabled = true;
-        branchBtn.disabled = false;
         branchBtn.onclick = () => {
             window.location.href = data.branch;
         };
     } else {
+        choiceActive = false;
         branchBtn.style.display = 'none';
+        clearChoices();
         updateButtonStates();
     }
 
@@ -183,6 +192,30 @@ function updateButtonStates() {
     nextBtn.disabled = currentIndex >= chapterData.length - 1;
 }
 
+function renderChoices(choices) {
+    const container = document.getElementById('choicesContainer');
+    if (!container) return;
+
+    container.innerHTML = '';
+    choices.forEach(choice => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'choice-btn';
+        btn.textContent = choice.label;
+        btn.addEventListener('click', () => {
+            choiceActive = false;
+            clearChoices();
+            goNext();
+        });
+        container.appendChild(btn);
+    });
+}
+
+function clearChoices() {
+    const container = document.getElementById('choicesContainer');
+    if (container) container.innerHTML = '';
+}
+
 // ============================
 // NAVIGATION
 // ============================
@@ -223,7 +256,8 @@ function bindEvents() {
 
     // Click dialogue box to advance
     dialogueBox.addEventListener('click', (e) => {
-        // Prevent triggering if user is selecting text
+        // Prevent triggering if a choice is pending or user is selecting text
+        if (choiceActive) return;
         if (window.getSelection && window.getSelection().toString().length === 0) {
             goNext();
         }

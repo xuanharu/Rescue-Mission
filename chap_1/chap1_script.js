@@ -298,7 +298,6 @@ const chapter1 = [{
         text: "Tôi tiếp tục bước đi mà không hề biết rằng cuộc sống của mình sắp thay đổi mãi mãi...",
         branch: '../chap_1/chap1-1.html'
     },
-
 ];
 
 const speakerPortraits = {

@@ -364,6 +364,48 @@ html, body {
   outline-offset: 3px;
 }
 
+/* Choice Buttons (multiple options) */
+.choices-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.choice-btn {
+  padding: 0.7rem 1.6rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: rgba(76, 200, 255, 0.1);
+  color: var(--glow-color);
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  outline: none;
+  user-select: none;
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 0 12px rgba(76, 200, 255, 0.15);
+}
+
+.choice-btn:hover:not(:disabled) {
+  background: rgba(76, 200, 255, 0.25);
+  border-color: var(--glow-color);
+  box-shadow: 0 0 20px rgba(76, 200, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.choice-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.choice-btn:focus-visible {
+  outline: 2px solid var(--glow-color);
+  outline-offset: 3px;
+}
+
 .dialogue-btn {
   padding: 0.6rem 1.4rem;
   border: 1px solid var(--border-color);
