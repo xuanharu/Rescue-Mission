@@ -9,7 +9,7 @@ const chapter1 = [{
 
         speaker: "",
 
-        text: "Con phố bỗng trở nên yên tĩnh lạ thường. Xa xa xuất hiện những cột khói đen đang bốc lên giữa thành phố."
+        text: "Góc phố yên tĩnh bỗng phát ra từng tiếng hét thất thanh. Xa xa xuất hiện những máy bay chiến đấu nổ súng vang rền giữa Quảng trường thành phố."
     },
 
     {
@@ -27,6 +27,20 @@ const chapter1 = [{
         speaker: "Main",
 
         text: "...Có chuyện gì vậy?"
+    },
+
+    {
+        background: "../img/chapter_1/main_city_war.webp",
+
+        characters: [],
+
+        animation: null,
+
+        type: "narration",
+
+        speaker: "",
+
+        text: "Hàng loạt máy bay chiến đấu xuất hiện, bắn pháo sáng xuống khắp thành phố khiến khói đen bủa vây."
     },
 
     {
@@ -143,7 +157,7 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/kidnaped_father.webp",
+        background: "../img/chapter_1/kidnapped_father.webp",
 
         characters: [],
 
@@ -157,7 +171,7 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/kidnaped_father.webp",
+        background: "../img/chapter_1/kidnapped_father.webp",
 
         characters: [],
 
@@ -171,10 +185,10 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/kidnaped_father.webp",
+        background: "../img/chapter_1/kidnapped_father.webp",
 
         characters: [{
-            image: "../img/character/father_kidnaped.webp",
+            image: "../img/character/father_kidnapped.webp",
             position: "center"
         }],
 
@@ -188,10 +202,10 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/kidnaped_father.webp",
+        background: "../img/chapter_1/kidnapped_father.webp",
 
         characters: [{
-            image: "../img/character/father_kidnaped.webp",
+            image: "../img/character/father_kidnapped.webp",
             position: "center"
         }],
 
@@ -205,7 +219,7 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/kidnaped_father.webp",
+        background: "../img/chapter_1/kidnapped_father.webp",
 
         characters: [],
 
@@ -219,10 +233,10 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/kidnaped_father.webp",
+        background: "../img/chapter_1/kidnapped_father.webp",
 
         characters: [{
-            image: "../img/character/father_kidnaped.webp",
+            image: "../img/character/father_kidnapped.webp",
             position: "center"
         }],
 
@@ -232,11 +246,11 @@ const chapter1 = [{
 
         speaker: "Nhà khoa học",
 
-        text: "...Con của ba..."
+        text: "...Con của ta...!"
     },
 
     {
-        background: "../img/chapter_1/kidnaped_father.webp",
+        background: "../img/chapter_1/kidnapped_father.webp",
 
         characters: [],
 
@@ -264,10 +278,10 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/main_city_war.webp",
+        background: "../img/chapter_1/main_city_destroyed.webp",
 
         characters: [{
-            image: "../img/character/male_character_uniform_normal.webp",
+            image: "../img/character/male_character_uniform_crying.webp",
             position: "center"
         }],
 
@@ -281,10 +295,10 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/main_city_war.webp",
+        background: "../img/chapter_1/main_city_destroyed.webp",
 
         characters: [{
-            image: "../img/character/male_character_uniform_normal.webp",
+            image: "../img/character/male_character_uniform_crying.webp",
             position: "center"
         }],
 
@@ -294,7 +308,7 @@ const chapter1 = [{
 
         speaker: "Main",
 
-        text: "...Ba...?"
+        text: "...Ba...!"
     }
 ];
 
