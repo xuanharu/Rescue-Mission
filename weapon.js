@@ -3,8 +3,7 @@
    ============================================ */
 
 const WeaponDB = {
-    weapons: [
-        {
+    weapons: [{ //Sát thương từ 8 đến 12 DMG. Tăng 2 sát thương cho mỗi lượt tấn công.
             id: "pistol_1",
             name: "Súng ngắn cơ bản",
             category: "gun",
@@ -17,7 +16,7 @@ const WeaponDB = {
                 attackBonus: 2
             }
         },
-        {
+        { //Sát thương từ 12 đến 18 DMG. Tăng 4 sát thương cho mỗi lượt tấn công.
             id: "pistol_2",
             name: "Súng ngắn nâng cao",
             category: "gun",
@@ -30,7 +29,7 @@ const WeaponDB = {
                 attackBonus: 4
             }
         },
-        {
+        { //Sát thương từ 18 đến 26 DMG. Tăng 6 sát thương cho mỗi lượt tấn công.
             id: "rifle_9",
             name: "Súng trường tầm xa",
             category: "gun",
@@ -43,7 +42,7 @@ const WeaponDB = {
                 attackBonus: 6
             }
         },
-        {
+        { //Sát thương từ 6 đến 10 DMG. Tăng 1 sát thương cho mỗi lượt tấn công.
             id: "dagger_9",
             name: "Dao găm",
             category: "melee",
@@ -56,7 +55,7 @@ const WeaponDB = {
                 attackBonus: 1
             }
         },
-        {
+        { //Sát thương từ 15 đến 22 DMG. Tăng 5 sát thương cho mỗi lượt tấn công.
             id: "axe_9",
             name: "Rìu chiến",
             category: "melee",
@@ -69,7 +68,7 @@ const WeaponDB = {
                 attackBonus: 5
             }
         },
-        {
+        { //Sát thương từ 10 đến 16 DMG. Tăng 3 sát thương cho mỗi lượt tấn công.
             id: "spear_9",
             name: "Thương",
             category: "melee",

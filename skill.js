@@ -3,75 +3,74 @@
    ============================================ */
 
 const SkillDB = {
-    skills: [
-        {
+    skills: [{ //Đấm thường: Sức mạnh vật lý từ 5 đến 10 DMG
             id: "punch",
             name: "Đấm thường",
             category: "physics",
             image: "../skill/Physics/skill_1_punch.webp",
             cost: 0,
             type: "attack",
-            desc: "Cú đấm cơ bản vào đối thủ",
+            desc: "Sức mạnh vật lý từ 5 đến 10 DMG",
             effect: {
-                damage: [10, 15]
+                damage: [5, 10]
             }
         },
-        {
+        { //Đánh mạnh: Sức mạnh vật lý từ 15 đến 25 DMG
             id: "heavy_strike",
             name: "Đánh mạnh",
             category: "physics",
             image: "../skill/Physics/skill_1_punch.webp",
-            cost: 20,
+            cost: 10,
             type: "attack",
-            desc: "Đòn đánh toàn lực gây nhiều sát thương",
+            desc: "Sức mạnh vật lý từ 15 đến 25 DMG",
             effect: {
-                damage: [20, 28]
+                damage: [15, 25]
             }
         },
-        {
+        { //Cầu lửa: Sức mạnh nguyên tố lửa từ 20 đến 35 DMG. Có khả năng áp chế nguyên tố gió và nguyên tố băng.
             id: "fireball",
             name: "Cầu lửa",
             category: "elements",
             image: "",
             cost: 15,
             type: "attack",
-            desc: "Bắn cầu lửa thiêu rụi đối thủ",
+            desc: "Sức mạnh nguyên tố lửa từ 20 đến 35 DMG. Có khả năng áp chế nguyên tố gió và nguyên tố băng.",
             effect: {
-                damage: [18, 25]
+                damage: [20, 35]
             }
         },
-        {
+        { // Né đòn: Giảm sát thương nhận vào 50% trong lượt tiếp theo
             id: "dodge",
             name: "Né đòn",
             category: "defend",
             image: "../skill/Defend/skill_1_dodge.webp",
             cost: 10,
             type: "guard",
-            desc: "Lăn tránh đòn tấn công sắp tới",
+            desc: "Lăn tránh 50% sát thương từ đòn tấn công sắp tới",
             effect: {
                 damageReduction: 0.5
             }
         },
-        {
+        { // Bình tĩnh: Hồi phục từ 15 đến 25 HP
             id: "calm-down",
             name: "Bình tĩnh",
             category: "heal",
             image: "../skill/Heal/skill_1_calm-down.webp",
             cost: 15,
             type: "heal",
-            desc: "Hít thở sâu và hồi phục vết thương",
+            desc: "Hồi phục từ 15 đến 25 HP",
             effect: {
-                heal: [15, 22]
+                heal: [15, 25]
             }
         },
-        {
+        { // Tập trung: Tăng 1.3 lần sát thương cho lượt đánh kế tiếp
             id: "focus",
             name: "Tập trung",
             category: "buff",
             image: "../skill/Buff/skill_1_focus.webp",
             cost: 10,
             type: "buff",
-            desc: "Tăng sát thương lượt tới",
+            desc: "Tăng 1.3 lần sát thương cho lượt đánh kế tiếp",
             effect: {
                 damageBoost: 1.3
             }
