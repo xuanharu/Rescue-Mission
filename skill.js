@@ -130,6 +130,22 @@ const SkillDB = {
                     user.damageBonus = 0;
                 }
 
+                // Apply weapon attack bonus
+                if (user.weaponBonus) {
+                    finalDamage += user.weaponBonus;
+                }
+
+                // Apply weapon damage multiplier
+                if (user.weapon && user.weapon.effect && user.weapon.effect.damageMultiplier) {
+                    finalDamage = Math.floor(finalDamage * user.weapon.effect.damageMultiplier);
+                }
+
+                // Disable guard if weapon has this effect
+                if (user.weapon && user.weapon.effect && user.weapon.effect.disableGuard) {
+                    target.guarding = false;
+                    logs.push({ type: 'status', target: 'rival', text: 'Guard broken!' });
+                }
+
                 target.hp = Math.max(0, target.hp - finalDamage);
                 logs.push({ type: 'damage', target: 'rival', amount: finalDamage });
             }

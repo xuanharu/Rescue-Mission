@@ -17,7 +17,10 @@ let player = {
     image: '',
     guarding: false,
     buffActive: false,
-    buffMultiplier: 1
+    buffMultiplier: 1,
+    weapon: null,
+    weaponBonus: 0,
+    damageBonus: 0
 };
 
 let rival = {
@@ -96,6 +99,9 @@ function initBattle(save) {
     player.guarding = false;
     player.buffActive = false;
     player.buffMultiplier = 1;
+    player.weapon = null;
+    player.weaponBonus = 0;
+    player.damageBonus = 0;
     player.image = playerGender === 'female'
         ? '../img/character/female_character_fighting_weapon.webp'
         : '../img/character/male_character_fighting_weapon.webp';
@@ -270,25 +276,17 @@ function useSkill(index) {
     player.stamina -= skill.cost;
     updateStaminaDisplay();
 
+    showBattleLog(battleData.messages.skillUsed
+        .replace('{player}', player.name)
+        .replace('{skill}', skill.name));
+
+    const logs = SkillDB.activate(skill, player, rival);
+
     if (skill.type === 'attack') {
-        let damage = randomRange(skill.damage[0], skill.damage[1]) - rival.defense;
-        if (player.buffActive) {
-            damage = Math.floor(damage * player.buffMultiplier);
-            player.buffActive = false;
-            player.buffMultiplier = 1;
-        }
-        const finalDamage = Math.max(1, damage);
-        rival.hp = Math.max(0, rival.hp - finalDamage);
-
-        showBattleLog(battleData.messages.skillUsed
-            .replace('{player}', player.name)
-            .replace('{skill}', skill.name));
-
         animateAttack('player');
         setTimeout(() => {
             animateHit('rival');
-            showDamage(finalDamage, 'rival');
-            updateHPBars();
+            processBattleLogs(logs);
             checkBattleEnd();
         }, 300);
 
@@ -299,17 +297,9 @@ function useSkill(index) {
         }, 1200);
 
     } else if (skill.type === 'heal') {
-        const healAmount = randomRange(skill.heal[0], skill.heal[1]);
-        player.hp = Math.min(player.maxHP, player.hp + healAmount);
-
-        showBattleLog(battleData.messages.skillUsed
-            .replace('{player}', player.name)
-            .replace('{skill}', skill.name));
-
         animateHeal('player');
         setTimeout(() => {
-            showDamage(healAmount, 'player-heal');
-            updateHPBars();
+            processBattleLogs(logs);
         }, 300);
 
         setTimeout(() => {
@@ -319,13 +309,8 @@ function useSkill(index) {
         }, 1200);
 
     } else if (skill.type === 'guard') {
-        player.guarding = true;
-
-        showBattleLog(battleData.messages.skillUsed
-            .replace('{player}', player.name)
-            .replace('{skill}', skill.name));
-
         animateHeal('player');
+        processBattleLogs(logs);
         showBattleLog(battleData.messages.playerGuard[Math.floor(Math.random() * battleData.messages.playerGuard.length)]
             .replace('{player}', player.name));
 
@@ -336,14 +321,8 @@ function useSkill(index) {
         }, 1200);
 
     } else if (skill.type === 'buff') {
-        player.buffActive = true;
-        player.buffMultiplier = skill.effect.damageBoost || 1.5;
-
-        showBattleLog(battleData.messages.skillUsed
-            .replace('{player}', player.name)
-            .replace('{skill}', skill.name));
-
         animateHeal('player');
+        processBattleLogs(logs);
 
         setTimeout(() => {
             if (battleActive) {
@@ -445,7 +424,11 @@ function enableSkills(enabled) {
         const index = parseInt(btn.dataset.index, 10);
         const skill = skills[index];
         if (!skill) return;
-        btn.disabled = !enabled || player.stamina < skill.cost;
+        let cost = skill.cost;
+        if (player.staminaCostReduction) {
+            cost = Math.floor(cost * (1 - player.staminaCostReduction));
+        }
+        btn.disabled = !enabled || player.stamina < cost;
     });
 }
 
@@ -551,10 +534,16 @@ function renderInventory(type) {
         const item = db.getById(itemId);
         if (!item) return;
 
+        const iconHtml = item.image
+            ? `<img src="${item.image}" alt="${item.name}">`
+            : '<div class="no-image-placeholder"></div>';
+
         const div = document.createElement('div');
         div.className = 'inventory-item';
         div.innerHTML = `
-            <div class="inventory-item-icon">${type === 'weapon' ? '⚔️' : '🧪'}</div>
+            <div class="inventory-item-icon">
+                ${iconHtml}
+            </div>
             <div class="inventory-item-info">
                 <div class="inventory-item-name">${item.name}</div>
                 <div class="inventory-item-desc">${item.desc}</div>
@@ -582,8 +571,17 @@ function equipWeapon(index) {
     const weapon = typeof WeaponDB !== 'undefined' ? WeaponDB.getById(weaponId) : null;
     if (!weapon) return;
 
-    // For now, just show a message - weapon equipping can be expanded later
+    // Unequip old weapon bonus if any
+    if (player.weapon) {
+        player.weaponBonus = 0;
+    }
+
+    // Equip new weapon
+    player.weapon = weapon;
+    player.weaponBonus = weapon.effect.attackBonus || 0;
+
     showBattleLog(`Đã trang bị ${weapon.name}!`);
+    updateEquipmentSlots();
 }
 
 function useItem(index) {
@@ -608,39 +606,95 @@ function useItem(index) {
 
 function processBattleLogs(logs) {
     logs.forEach(log => {
-        if (log.type === 'damage') {
-            showDamage(log.amount, 'rival');
-            updateHPBars();
-        } else if (log.type === 'heal') {
-            showDamage(log.amount, 'player-heal');
-            updateHPBars();
-        } else if (log.type === 'stamina') {
-            updateStaminaDisplay();
+        switch (log.type) {
+            case 'damage':
+                showDamage(log.amount, 'rival');
+                updateHPBars();
+                break;
+            case 'heal':
+                showDamage(log.amount, 'player-heal');
+                updateHPBars();
+                break;
+            case 'guard':
+                showBattleLog(`Né đòn! Giảm ${log.amount}% sát thương.`);
+                break;
+            case 'buff':
+                showBattleLog(`Tập trung! Tăng ${log.amount}% sát thương.`);
+                break;
+            case 'stamina':
+                updateStaminaDisplay();
+                break;
+            case 'status':
+                showBattleLog(log.text);
+                break;
+            default:
+                break;
         }
     });
 }
 
 function updateEquipmentSlots() {
-    // Update weapon slots
-    if (weapon1Slot && inventory.weapons[0]) {
+    // Update weapon slots based on equipped weapon
+    const w1Img = weapon1Slot.querySelector('.slot-img');
+    const w1Label = weapon1Slot.querySelector('.slot-label');
+    const w2Img = weapon2Slot.querySelector('.slot-img');
+    const w2Label = weapon2Slot.querySelector('.slot-label');
+    const buffImg = buffItemSlot.querySelector('.slot-img');
+    const buffLabel = buffItemSlot.querySelector('.slot-label');
+
+    if (player.weapon) {
+        if (w1Img) {
+            w1Img.src = player.weapon.image;
+            w1Img.style.display = 'block';
+        }
+        if (w1Label) w1Label.textContent = '';
+        weapon1Slot.style.borderColor = 'rgba(76, 255, 136, 0.6)';
+    } else if (inventory.weapons[0]) {
         const weapon = typeof WeaponDB !== 'undefined' ? WeaponDB.getById(inventory.weapons[0]) : null;
         if (weapon) {
-            weapon1Slot.querySelector('.slot-label').textContent = weapon.name.substring(0, 10);
+            if (w1Img) {
+                w1Img.src = weapon.image;
+                w1Img.style.display = 'block';
+            }
+            if (w1Label) w1Label.textContent = '';
         }
+    } else {
+        if (w1Img) w1Img.style.display = 'none';
+        if (w1Label) w1Label.textContent = 'VŨ KHÍ 1';
     }
-    if (weapon2Slot && inventory.weapons[1]) {
+
+    if (inventory.weapons[1]) {
         const weapon = typeof WeaponDB !== 'undefined' ? WeaponDB.getById(inventory.weapons[1]) : null;
         if (weapon) {
-            weapon2Slot.querySelector('.slot-label').textContent = weapon.name.substring(0, 10);
+            if (w2Img) {
+                w2Img.src = weapon.image;
+                w2Img.style.display = 'block';
+            }
+            if (w2Label) w2Label.textContent = '';
         }
+    } else {
+        if (w2Img) w2Img.style.display = 'none';
+        if (w2Label) w2Label.textContent = 'VŨ KHÍ 2';
     }
 
     // Update buff item slot
-    if (buffItemSlot && inventory.items[0]) {
+    if (inventory.items[0]) {
         const item = typeof ItemDB !== 'undefined' ? ItemDB.getById(inventory.items[0]) : null;
         if (item) {
-            buffItemSlot.querySelector('.slot-label').textContent = item.name.substring(0, 10);
+            if (item.image) {
+                if (buffImg) {
+                    buffImg.src = item.image;
+                    buffImg.style.display = 'block';
+                }
+                if (buffLabel) buffLabel.textContent = '';
+            } else {
+                if (buffImg) buffImg.style.display = 'none';
+                if (buffLabel) buffLabel.textContent = item.name.substring(0, 10);
+            }
         }
+    } else {
+        if (buffImg) buffImg.style.display = 'none';
+        if (buffLabel) buffLabel.textContent = 'BUFF';
     }
 }
 
