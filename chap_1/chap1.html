@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rescue Mission - Chapter 1</title>
-
+    <link rel="icon" href="../img/logo.webp" type="image/webp">
     <link rel="stylesheet" href="chap1.css">
 </head>
 
@@ -13,20 +13,11 @@
 
     <div class="game-container">
 
-        <!-- =========================
-         Left Navigation
-    ========================== -->
-
         <aside class="nav-panel">
-            <button id="closeBtn" class="nav-btn" title="Close">
-            ✕
-        </button>
-            <button id="saveBtn" class="nav-btn" title="Save">
-            💾
-        </button>
-            <button id="homeBtn" class="nav-btn" title="Home">
-            🏠
-        </button>
+            <button id="pauseBtn" class="nav-btn" title="Pause">⏸️</button>
+            <button id="muteBtn" class="nav-btn" title="Mute">🔊</button>
+            <button id="chaptersBtn" class="nav-btn" title="Chapters">📖</button>
+            <button id="homeBtn" class="nav-btn" title="Home">🏠</button>
         </aside>
 
         <!-- =========================
@@ -93,6 +84,12 @@
                 </button>
                 </div>
             </section>
+
+            <div id="pauseOverlay" class="pause-overlay" style="display:none;">
+                <img src="../img/paused_screen.webp" alt="Paused" class="pause-image">
+                <div class="pause-text">Nhấp vào để tiếp tục</div>
+            </div>
+
         </main>
     </div>
 

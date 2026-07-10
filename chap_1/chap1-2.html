@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rescue Mission - Chapter 1-2: Battle</title>
+    <link rel="icon" href="../img/logo.webp" type="image/webp">
     <link rel="stylesheet" href="chap1-2.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 </head>
@@ -14,8 +15,9 @@
     <div class="game-container">
 
         <aside class="nav-panel">
-            <button id="closeBtn" class="nav-btn" title="Close">✕</button>
-            <button id="saveBtn" class="nav-btn" title="Save">💾</button>
+            <button id="pauseBtn" class="nav-btn" title="Pause">⏸️</button>
+            <button id="muteBtn" class="nav-btn" title="Mute">🔊</button>
+            <button id="chaptersBtn" class="nav-btn" title="Chapters">📖</button>
             <button id="homeBtn" class="nav-btn" title="Home">🏠</button>
         </aside>
 
@@ -63,15 +65,15 @@
                 </div>
 
                 <div class="equipment-panel">
-                    <div class="equipment-slot weapon-slot" id="weapon1Slot">
+                    <div class="equipment-slot weapon-slot" id="weapon1Slot" data-type="weapon" data-index="0">
                         <div class="slot-icon">⚔️</div>
                         <div class="slot-label">VŨ KHÍ 1</div>
                     </div>
-                    <div class="equipment-slot weapon-slot" id="weapon2Slot">
+                    <div class="equipment-slot weapon-slot" id="weapon2Slot" data-type="weapon" data-index="1">
                         <div class="slot-icon">⚔️</div>
                         <div class="slot-label">VŨ KHÍ 2</div>
                     </div>
-                    <div class="equipment-slot buff-slot" id="buffItemSlot">
+                    <div class="equipment-slot buff-slot" id="buffItemSlot" data-type="item" data-index="0">
                         <div class="slot-icon">🧪</div>
                         <div class="slot-label">BUFF</div>
                     </div>
@@ -103,6 +105,22 @@
                     </div>
                 </div>
 
+                <div id="inventoryOverlay" class="inventory-overlay" style="display:none;">
+                    <div class="inventory-box">
+                        <h3 class="inventory-title" id="inventoryTitle">KHO ĐỒ</h3>
+                        <div id="inventoryList" class="inventory-list"></div>
+                        <button id="closeInventoryBtn" class="inventory-close-btn">ĐÓNG</button>
+                    </div>
+                </div>
+
+                <div id="chaptersOverlay" class="chapters-overlay" style="display:none;">
+                    <div class="chapters-box">
+                        <h3 class="chapters-title">CHƯƠNG</h3>
+                        <div id="chaptersList" class="chapters-list"></div>
+                        <button id="closeChaptersBtn" class="inventory-close-btn">ĐÓNG</button>
+                    </div>
+                </div>
+
             </section>
 
             <section class="skills-panel">
@@ -127,9 +145,16 @@
 
             </section>
 
+            <div id="pauseOverlay" class="pause-overlay" style="display:none;">
+                <img src="../img/paused_screen.webp" alt="Paused" class="pause-image">
+                <div class="pause-text">Nhấp vào để tiếp tục</div>
+            </div>
+
         </main>
     </div>
 
+    <script src="../skill.js"></script>
+    <script src="../weapon.js"></script>
     <script src="chap1-2_script.js"></script>
     <script src="chap1-2.js"></script>
 

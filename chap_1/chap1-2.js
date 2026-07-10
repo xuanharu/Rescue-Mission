@@ -29,6 +29,10 @@ let rival = {
 
 let skills = [];
 let currentCategory = 'defend';
+let inventory = {
+    weapons: [],
+    items: []
+};
 
 const playerNameEl = document.getElementById('playerName');
 const playerHPText = document.getElementById('playerHPText');
@@ -48,11 +52,23 @@ const victoryOverlay = document.getElementById('victoryOverlay');
 const defeatOverlay = document.getElementById('defeatOverlay');
 const continueBtn = document.getElementById('continueBtn');
 const retryBtn = document.getElementById('retryBtn');
-const closeBtn = document.getElementById('closeBtn');
-const saveBtn = document.getElementById('saveBtn');
+const pauseBtn = document.getElementById('pauseBtn');
+const muteBtn = document.getElementById('muteBtn');
 const homeBtn = document.getElementById('homeBtn');
 const coinValue = document.getElementById('coinValue');
 const staminaValue = document.getElementById('staminaValue');
+const weapon1Slot = document.getElementById('weapon1Slot');
+const weapon2Slot = document.getElementById('weapon2Slot');
+const buffItemSlot = document.getElementById('buffItemSlot');
+const inventoryOverlay = document.getElementById('inventoryOverlay');
+const inventoryList = document.getElementById('inventoryList');
+const inventoryTitle = document.getElementById('inventoryTitle');
+const closeInventoryBtn = document.getElementById('closeInventoryBtn');
+const chaptersBtn = document.getElementById('chaptersBtn');
+const chaptersOverlay = document.getElementById('chaptersOverlay');
+const chaptersList = document.getElementById('chaptersList');
+const closeChaptersBtn = document.getElementById('closeChaptersBtn');
+const pauseOverlay = document.getElementById('pauseOverlay');
 
 function init() {
     const save = loadSave();
@@ -89,8 +105,24 @@ function initBattle(save) {
     rival.hp = battleData.rival.maxHP;
     rival.image = battleData.rival.image;
 
-    skills = battleData.playerSkills.map(s => ({ ...s }));
+    skills = battleData.playerSkills.map(id => {
+        if (typeof SkillDB !== 'undefined') {
+            const skill = SkillDB.getById(id);
+            if (skill) return { ...skill };
+        }
+        return null;
+    }).filter(Boolean);
     currentCategory = 'defend';
+
+    // Load inventory
+    inventory.weapons = (battleData.character && battleData.character.weapons) ? [...battleData.character.weapons] : [];
+    inventory.items = (battleData.character && battleData.character.items) ? [...battleData.character.items] : [];
+
+    // Update equipment slots
+    updateEquipmentSlots();
+
+    // Unlock current chapter
+    unlockChapter('chap1-2');
 
     coinValue.textContent = (save && typeof save.money === 'number') ? save.money : '100';
 
@@ -127,15 +159,34 @@ function startBattle() {
 }
 
 function bindEvents() {
-    closeBtn.addEventListener('click', () => {
-        console.log('Close');
-    });
+    pauseBtn.addEventListener('click', togglePause);
 
-    saveBtn.addEventListener('click', saveGame);
+    if (pauseOverlay) {
+        pauseOverlay.addEventListener('click', togglePause);
+    }
+
+    muteBtn.addEventListener('click', toggleMute);
 
     homeBtn.addEventListener('click', () => {
         window.location.href = '../index.html';
     });
+
+    // Chapters button
+    if (chaptersBtn) {
+        chaptersBtn.addEventListener('click', () => {
+            openChapters();
+        });
+    }
+
+    if (closeChaptersBtn) {
+        closeChaptersBtn.addEventListener('click', closeChapters);
+    }
+
+    if (chaptersOverlay) {
+        chaptersOverlay.addEventListener('click', (e) => {
+            if (e.target === chaptersOverlay) closeChapters();
+        });
+    }
 
     continueBtn.addEventListener('click', () => {
         window.location.href = '../chap_1/chap1.html';
@@ -147,6 +198,23 @@ function bindEvents() {
         initBattle(loadSave());
         startBattle();
     });
+
+    // Equipment slot clicks
+    if (weapon1Slot) weapon1Slot.addEventListener('click', () => openInventory('weapon', 0));
+    if (weapon2Slot) weapon2Slot.addEventListener('click', () => openInventory('weapon', 1));
+    if (buffItemSlot) buffItemSlot.addEventListener('click', () => openInventory('item', 0));
+
+    // Close inventory
+    if (closeInventoryBtn) {
+        closeInventoryBtn.addEventListener('click', closeInventory);
+    }
+
+    // Close inventory on overlay click
+    if (inventoryOverlay) {
+        inventoryOverlay.addEventListener('click', (e) => {
+            if (e.target === inventoryOverlay) closeInventory();
+        });
+    }
 
     if (skillTabs) {
         skillTabs.addEventListener('click', (e) => {
@@ -448,6 +516,135 @@ function randomRange(min, max) {
 }
 
 /* ============================
+   INVENTORY SYSTEM
+   ============================ */
+
+function openInventory(type, index) {
+    if (!canAct || !battleActive) return;
+
+    inventoryTitle.textContent = type === 'weapon' ? 'VŨ KHÍ' : 'VẬT PHẨM';
+    renderInventory(type);
+    inventoryOverlay.style.display = 'flex';
+}
+
+function closeInventory() {
+    inventoryOverlay.style.display = 'none';
+}
+
+function renderInventory(type) {
+    inventoryList.innerHTML = '';
+
+    const items = type === 'weapon' ? inventory.weapons : inventory.items;
+    const db = type === 'weapon' ? (typeof WeaponDB !== 'undefined' ? WeaponDB : null) : (typeof ItemDB !== 'undefined' ? ItemDB : null);
+
+    if (!db) {
+        inventoryList.innerHTML = '<div style="text-align:center;color:var(--text-gray);">Không có dữ liệu</div>';
+        return;
+    }
+
+    if (items.length === 0) {
+        inventoryList.innerHTML = '<div style="text-align:center;color:var(--text-gray);">Trống</div>';
+        return;
+    }
+
+    items.forEach((itemId, index) => {
+        const item = db.getById(itemId);
+        if (!item) return;
+
+        const div = document.createElement('div');
+        div.className = 'inventory-item';
+        div.innerHTML = `
+            <div class="inventory-item-icon">${type === 'weapon' ? '⚔️' : '🧪'}</div>
+            <div class="inventory-item-info">
+                <div class="inventory-item-name">${item.name}</div>
+                <div class="inventory-item-desc">${item.desc}</div>
+            </div>
+            <div class="inventory-item-cost">${item.cost > 0 ? '-' + item.cost : 'FREE'}</div>
+        `;
+
+        div.addEventListener('click', () => {
+            if (type === 'weapon') {
+                equipWeapon(index);
+            } else {
+                useItem(index);
+            }
+            closeInventory();
+        });
+
+        inventoryList.appendChild(div);
+    });
+}
+
+function equipWeapon(index) {
+    if (index >= inventory.weapons.length) return;
+
+    const weaponId = inventory.weapons[index];
+    const weapon = typeof WeaponDB !== 'undefined' ? WeaponDB.getById(weaponId) : null;
+    if (!weapon) return;
+
+    // For now, just show a message - weapon equipping can be expanded later
+    showBattleLog(`Đã trang bị ${weapon.name}!`);
+}
+
+function useItem(index) {
+    if (index >= inventory.items.length) return;
+    if (!canAct || !battleActive || !isPlayerTurn) return;
+
+    const itemId = inventory.items[index];
+    const item = typeof ItemDB !== 'undefined' ? ItemDB.getById(itemId) : null;
+    if (!item) return;
+
+    // Remove item from inventory
+    inventory.items.splice(index, 1);
+
+    // Activate item effect
+    if (typeof ItemDB !== 'undefined') {
+        const logs = ItemDB.activate(item, player, rival);
+        processBattleLogs(logs);
+    }
+
+    showBattleLog(`Sử dụng ${item.name}!`);
+}
+
+function processBattleLogs(logs) {
+    logs.forEach(log => {
+        if (log.type === 'damage') {
+            showDamage(log.amount, 'rival');
+            updateHPBars();
+        } else if (log.type === 'heal') {
+            showDamage(log.amount, 'player-heal');
+            updateHPBars();
+        } else if (log.type === 'stamina') {
+            updateStaminaDisplay();
+        }
+    });
+}
+
+function updateEquipmentSlots() {
+    // Update weapon slots
+    if (weapon1Slot && inventory.weapons[0]) {
+        const weapon = typeof WeaponDB !== 'undefined' ? WeaponDB.getById(inventory.weapons[0]) : null;
+        if (weapon) {
+            weapon1Slot.querySelector('.slot-label').textContent = weapon.name.substring(0, 10);
+        }
+    }
+    if (weapon2Slot && inventory.weapons[1]) {
+        const weapon = typeof WeaponDB !== 'undefined' ? WeaponDB.getById(inventory.weapons[1]) : null;
+        if (weapon) {
+            weapon2Slot.querySelector('.slot-label').textContent = weapon.name.substring(0, 10);
+        }
+    }
+
+    // Update buff item slot
+    if (buffItemSlot && inventory.items[0]) {
+        const item = typeof ItemDB !== 'undefined' ? ItemDB.getById(inventory.items[0]) : null;
+        if (item) {
+            buffItemSlot.querySelector('.slot-label').textContent = item.name.substring(0, 10);
+        }
+    }
+}
+
+/* ============================
    SAVE GAME
    ============================ */
 const SAVE_KEY = 'rescueMission_save';
@@ -469,18 +666,120 @@ function saveGame() {
 
     try {
         localStorage.setItem(SAVE_KEY, JSON.stringify(save));
-        showSaveFeedback();
+        console.log('Game saved');
     } catch (e) {
         console.error('Failed to save game:', e);
     }
 }
 
-function showSaveFeedback() {
-    const original = saveBtn.textContent;
-    saveBtn.textContent = 'Đã lưu ✓';
-    setTimeout(() => {
-        saveBtn.textContent = original;
-    }, 1500);
+/* ============================
+   CHAPTER SYSTEM
+   ============================ */
+
+const CHAPTERS = [
+    { id: 'chap0', name: 'Chương 0: Mở đầu', path: '../chap_0/chap0.html', requires: [] },
+    { id: 'chap1', name: 'Chương 1: Bắt đầu', path: '../chap_1/chap1.html', requires: ['chap0'] },
+    { id: 'chap1-1', name: 'Chương 1-1: Hồi tưởng', path: '../chap_1/chap1-1.html', requires: ['chap1'] },
+    { id: 'chap1-2', name: 'Chương 1-2: Chiến đấu', path: '../chap_1/chap1-2.html', requires: ['chap1-1'] }
+];
+
+function getUnlockedChapters() {
+    const save = loadSave();
+    if (save && Array.isArray(save.unlockedChapters)) {
+        return save.unlockedChapters;
+    }
+    return ['chap0'];
+}
+
+function unlockChapter(chapterId) {
+    const save = loadSave() || {};
+    if (!Array.isArray(save.unlockedChapters)) {
+        save.unlockedChapters = ['chap0'];
+    }
+    if (!save.unlockedChapters.includes(chapterId)) {
+        save.unlockedChapters.push(chapterId);
+    }
+    save.currentChapter = chapterId;
+    try {
+        localStorage.setItem(SAVE_KEY, JSON.stringify(save));
+    } catch (e) {
+        console.error('Failed to save chapters:', e);
+    }
+}
+
+function openChapters() {
+    const unlocked = getUnlockedChapters();
+    chaptersList.innerHTML = '';
+
+    CHAPTERS.forEach(chap => {
+        const isUnlocked = chap.requires.every(req => unlocked.includes(req)) || unlocked.includes(chap.id);
+        const isCurrent = window.location.pathname.endsWith(chap.path.replace('../', ''));
+
+        const btn = document.createElement('button');
+        btn.className = 'chapter-btn';
+        if (isCurrent) btn.classList.add('active');
+        if (!isUnlocked) btn.classList.add('locked');
+
+        btn.innerHTML = `
+            <span class="chapter-name">${chap.name}</span>
+            <span class="chapter-status">${isCurrent ? 'ĐANG CHƠI' : (isUnlocked ? 'ĐÃ MỞ' : '🔒')}</span>
+        `;
+
+        if (isUnlocked) {
+            btn.addEventListener('click', () => {
+                unlockChapter(chap.id);
+                window.location.href = chap.path;
+            });
+        }
+
+        chaptersList.appendChild(btn);
+    });
+
+    chaptersOverlay.style.display = 'flex';
+}
+
+function closeChapters() {
+    chaptersOverlay.style.display = 'none';
+}
+
+/* ============================
+   AUDIO CONTROLS
+   ============================ */
+
+let isPaused = false;
+let isMuted = false;
+
+function togglePause() {
+    isPaused = !isPaused;
+    pauseBtn.textContent = isPaused ? '▶️' : '⏸️';
+    pauseBtn.title = isPaused ? 'Play' : 'Pause';
+
+    if (pauseOverlay) {
+        pauseOverlay.style.display = isPaused ? 'flex' : 'none';
+    }
+
+    if (isPaused) {
+        battleActive = false;
+        canAct = false;
+        enableSkills(false);
+    } else {
+        battleActive = true;
+        isPlayerTurn = true;
+        canAct = true;
+        enableSkills(true);
+        showTurnIndicator(player.name);
+    }
+}
+
+function toggleMute() {
+    isMuted = !isMuted;
+    muteBtn.textContent = isMuted ? '🔇' : '🔊';
+    muteBtn.title = isMuted ? 'Unmute' : 'Mute';
+
+    const music = document.getElementById('bgMusic');
+    if (music) {
+        music.muted = isMuted;
+    }
 }
 
 /* ============================

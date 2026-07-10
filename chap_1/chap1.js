@@ -24,9 +24,11 @@ const previousBtn = document.getElementById('previousBtn');
 const nextBtn = document.getElementById('nextBtn');
 const branchBtn = document.getElementById('branchBtn');
 const coinValue = document.getElementById('coinValue');
-const closeBtn = document.getElementById('closeBtn');
-const saveBtn = document.getElementById('saveBtn');
+const pauseBtn = document.getElementById('pauseBtn');
+const muteBtn = document.getElementById('muteBtn');
+const chaptersBtn = document.getElementById('chaptersBtn');
 const homeBtn = document.getElementById('homeBtn');
+const pauseOverlay = document.getElementById('pauseOverlay');
 
 // ============================
 // INITIALIZATION
@@ -49,6 +51,9 @@ function init() {
 
     // Set coin value
     coinValue.textContent = (save && typeof save.money === 'number') ? save.money : '100';
+
+    // Unlock current chapter
+    unlockChapter('chap1');
 
     // Load first dialogue
     renderDialogue(currentIndex);
@@ -230,15 +235,21 @@ function bindEvents() {
     });
 
     // Navigation buttons
-    closeBtn.addEventListener('click', () => {
-        console.log('Close');
-    });
+    pauseBtn.addEventListener('click', togglePause);
 
-    saveBtn.addEventListener('click', saveGame);
+    if (pauseOverlay) {
+        pauseOverlay.addEventListener('click', togglePause);
+    }
+
+    muteBtn.addEventListener('click', toggleMute);
 
     homeBtn.addEventListener('click', () => {
         window.location.href = '../index.html';
     });
+
+    if (chaptersBtn) {
+        chaptersBtn.addEventListener('click', openChapters);
+    }
 }
 
 // ============================
@@ -271,11 +282,118 @@ function saveGame() {
 }
 
 function showSaveFeedback() {
-    const original = saveBtn.textContent;
-    saveBtn.textContent = 'Đã lưu ✓';
-    setTimeout(() => {
-        saveBtn.textContent = original;
-    }, 1500);
+    console.log('Game saved');
+}
+
+// ============================
+// AUDIO & NAVIGATION
+// ============================
+
+let isPaused = false;
+let isMuted = false;
+
+function togglePause() {
+    isPaused = !isPaused;
+    if (pauseBtn) {
+        pauseBtn.textContent = isPaused ? '▶️' : '⏸️';
+        pauseBtn.title = isPaused ? 'Play' : 'Pause';
+    }
+    if (pauseOverlay) {
+        pauseOverlay.style.display = isPaused ? 'flex' : 'none';
+    }
+}
+
+function toggleMute() {
+    isMuted = !isMuted;
+    if (muteBtn) {
+        muteBtn.textContent = isMuted ? '🔇' : '🔊';
+        muteBtn.title = isMuted ? 'Unmute' : 'Mute';
+    }
+    const music = document.getElementById('bgMusic');
+    if (music) music.muted = isMuted;
+}
+
+const CHAPTERS = [
+    { id: 'chap0', name: 'Chương 0: Mở đầu', path: '../chap_0/chap0.html', requires: [] },
+    { id: 'chap1', name: 'Chương 1: Bắt đầu', path: '../chap_1/chap1.html', requires: ['chap0'] },
+    { id: 'chap1-1', name: 'Chương 1-1: Hồi tưởng', path: '../chap_1/chap1-1.html', requires: ['chap1'] },
+    { id: 'chap1-2', name: 'Chương 1-2: Chiến đấu', path: '../chap_1/chap1-2.html', requires: ['chap1-1'] }
+];
+
+function getUnlockedChapters() {
+    try {
+        const raw = localStorage.getItem(SAVE_KEY);
+        const save = raw ? JSON.parse(raw) : null;
+        if (save && Array.isArray(save.unlockedChapters)) {
+            return save.unlockedChapters;
+        }
+    } catch (e) {}
+    return ['chap0'];
+}
+
+function unlockChapter(chapterId) {
+    const save = loadSave() || {};
+    if (!Array.isArray(save.unlockedChapters)) {
+        save.unlockedChapters = ['chap0'];
+    }
+    if (!save.unlockedChapters.includes(chapterId)) {
+        save.unlockedChapters.push(chapterId);
+    }
+    save.currentChapter = chapterId;
+    try {
+        localStorage.setItem(SAVE_KEY, JSON.stringify(save));
+    } catch (e) {
+        console.error('Failed to save chapters:', e);
+    }
+}
+
+function openChapters() {
+    const unlocked = getUnlockedChapters();
+    const existing = document.getElementById('chaptersOverlay');
+    if (existing) existing.remove();
+
+    const overlay = document.createElement('div');
+    overlay.id = 'chaptersOverlay';
+    overlay.className = 'chapters-overlay';
+    overlay.innerHTML = `
+        <div class="chapters-box">
+            <h3 class="chapters-title">CHƯƠNG</h3>
+            <div class="chapters-list">
+                ${CHAPTERS.map(chap => {
+                    const isUnlocked = chap.requires.every(req => unlocked.includes(req)) || unlocked.includes(chap.id);
+                    const isCurrent = window.location.pathname.endsWith(chap.path.replace('../', ''));
+                    return `
+                        <button class="chapter-btn ${isCurrent ? 'active' : ''} ${!isUnlocked ? 'locked' : ''}"
+                                data-path="${chap.path}" ${!isUnlocked ? 'disabled' : ''}>
+                            <span class="chapter-name">${chap.name}</span>
+                            <span class="chapter-status">${isCurrent ? 'ĐANG CHƠI' : (isUnlocked ? 'ĐÃ MỞ' : '🔒')}</span>
+                        </button>
+                    `;
+                }).join('')}
+            </div>
+            <button id="closeChaptersBtn" class="inventory-close-btn">ĐÓNG</button>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    overlay.querySelectorAll('.chapter-btn:not(.locked)').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const path = btn.dataset.path;
+            const chapterId = CHAPTERS.find(c => c.path === path)?.id;
+            if (chapterId) unlockChapter(chapterId);
+            window.location.href = path;
+        });
+    });
+
+    const closeBtn = document.getElementById('closeChaptersBtn');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => overlay.remove());
+    }
+
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.remove();
+    });
 }
 
 // ============================

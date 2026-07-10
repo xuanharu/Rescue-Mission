@@ -5,66 +5,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rescue Mission - Choose Your Character</title>
+    <link rel="icon" href="../img/logo.webp" type="image/webp">
     <link rel="stylesheet" href="chap0.css">
 </head>
 
 <body>
 
-    <!-- Background Layer -->
-    <div class="bg-layer">
-        <div class="bg-glow" aria-hidden="true"></div>
-        <div class="stars-container" id="starsContainer" aria-hidden="true"></div>
-        <img class="space-ship" src="../img/space_ship.webp" alt="" aria-hidden="true">
-        <div class="vignette" aria-hidden="true"></div>
-    </div>
+    <div class="game-container">
 
-    <!-- Coin Display -->
-    <div class="coin-display">
-        <img src="../img/coin.webp" class="coin-icon" alt="Coin">
-        <span id="coinValue">100</span>
-    </div>
+        <aside class="nav-panel">
+            <button id="pauseBtn" class="nav-btn" title="Pause">⏸️</button>
+            <button id="muteBtn" class="nav-btn" title="Mute">🔊</button>
+            <button id="chaptersBtn" class="nav-btn" title="Chapters">📖</button>
+            <button id="homeBtn" class="nav-btn" title="Home">🏠</button>
+        </aside>
 
-    <!-- Selection Screen -->
-    <main class="select-container">
+        <main class="select-container">
 
-        <h1 class="title">CHỌN NHÂN VẬT</h1>
-        <p class="subtitle">Hãy chọn người hùng của bạn và đặt tên cho họ</p>
+            <!-- Background Layer -->
+            <div class="bg-layer">
+                <div class="bg-glow" aria-hidden="true"></div>
+                <div class="stars-container" id="starsContainer" aria-hidden="true"></div>
+                <img class="space-ship" src="../img/space_ship.webp" alt="" aria-hidden="true">
+                <div class="vignette" aria-hidden="true"></div>
+            </div>
 
-        <section class="cards" id="cards">
+            <!-- Coin Display -->
+            <div class="coin-display">
+                <img src="../img/coin.webp" class="coin-icon" alt="Coin">
+                <span id="coinValue">100</span>
+            </div>
 
-            <button class="char-card" data-character="male" type="button" aria-pressed="false">
-                <div class="char-frame">
-                    <img class="char-img" src="../img/character/male_character_uniform_normal.webp" alt="Male character">
+            <h1 class="title">CHỌN NHÂN VẬT</h1>
+            <p class="subtitle">Hãy chọn người hùng của bạn và đặt tên cho họ</p>
+
+            <section class="cards" id="cards">
+
+                <button class="char-card" data-character="male" type="button" aria-pressed="false">
+                    <div class="char-frame">
+                        <img class="char-img" src="../img/character/male_character_uniform_normal.webp" alt="Male character">
+                    </div>
+                </button>
+
+                <button class="char-card" data-character="female" type="button" aria-pressed="false">
+                    <div class="char-frame">
+                        <img class="char-img" src="../img/character/female_character_uniform_normal.webp" alt="Female character">
+                    </div>
+                </button>
+
+            </section>
+
+            <div class="name-field">
+                <label for="charName">Tên nhân vật</label>
+                <input id="charName" type="text" maxlength="20" placeholder="Nhập tên của bạn..." autocomplete="off">
+            </div>
+
+            <button id="saveBtn" class="save-btn" type="button">LƯU</button>
+
+            <div id="pauseOverlay" class="pause-overlay" style="display:none;">
+                <img src="../img/paused_screen.webp" alt="Paused" class="pause-image">
+                <div class="pause-text">Nhấp vào để tiếp tục</div>
+            </div>
+
+        </main>
+
+        <!-- Confirmation Modal -->
+        <div class="modal-overlay" id="confirmModal" aria-hidden="true">
+            <div class="modal-box">
+                <h2 class="modal-title">XÁC NHẬN</h2>
+                <p class="modal-text" id="modalText"></p>
+                <div class="modal-actions">
+                    <button class="modal-btn cancel" id="cancelBtn" type="button">Hủy</button>
+                    <button class="modal-btn confirm" id="confirmBtn" type="button">Xác nhận</button>
                 </div>
-            </button>
-
-            <button class="char-card" data-character="female" type="button" aria-pressed="false">
-                <div class="char-frame">
-                    <img class="char-img" src="../img/character/female_character_uniform_normal.webp" alt="Female character">
-                </div>
-            </button>
-
-        </section>
-
-        <div class="name-field">
-            <label for="charName">Tên nhân vật</label>
-            <input id="charName" type="text" maxlength="20" placeholder="Nhập tên của bạn..." autocomplete="off">
-        </div>
-
-        <button id="saveBtn" class="save-btn" type="button">LƯU</button>
-
-    </main>
-
-    <!-- Confirmation Modal -->
-    <div class="modal-overlay" id="confirmModal" aria-hidden="true">
-        <div class="modal-box">
-            <h2 class="modal-title">XÁC NHẬN</h2>
-            <p class="modal-text" id="modalText"></p>
-            <div class="modal-actions">
-                <button class="modal-btn cancel" id="cancelBtn" type="button">Hủy</button>
-                <button class="modal-btn confirm" id="confirmBtn" type="button">Xác nhận</button>
             </div>
         </div>
+
     </div>
 
     <script src="chap0.js"></script>

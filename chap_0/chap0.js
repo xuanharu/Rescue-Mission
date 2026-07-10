@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSelection();
     initSave();
     initModal();
+    initNavigation();
     initBackgroundMusic();
 });
 
@@ -30,6 +31,133 @@ function initBackgroundMusic() {
     // Fallback: start on first user interaction (browsers may block autoplay)
     ['click', 'keydown', 'touchstart'].forEach(evt => {
         document.addEventListener(evt, tryPlay, { once: true });
+    });
+}
+
+/* --- Navigation --- */
+
+function initNavigation() {
+    const pauseBtn = document.getElementById('pauseBtn');
+    const muteBtn = document.getElementById('muteBtn');
+    const homeBtn = document.getElementById('homeBtn');
+    const chaptersBtn = document.getElementById('chaptersBtn');
+    const pauseOverlay = document.getElementById('pauseOverlay');
+
+    if (pauseBtn) pauseBtn.addEventListener('click', togglePause);
+    if (muteBtn) muteBtn.addEventListener('click', toggleMute);
+    if (homeBtn) homeBtn.addEventListener('click', () => {
+        window.location.href = '../index.html';
+    });
+    if (chaptersBtn) chaptersBtn.addEventListener('click', openChapters);
+    if (pauseOverlay) pauseOverlay.addEventListener('click', togglePause);
+}
+
+let isPaused = false;
+let isMuted = false;
+
+function togglePause() {
+    isPaused = !isPaused;
+    const pauseBtn = document.getElementById('pauseBtn');
+    if (pauseBtn) {
+        pauseBtn.textContent = isPaused ? '▶️' : '⏸️';
+        pauseBtn.title = isPaused ? 'Play' : 'Pause';
+    }
+    const pauseOverlay = document.getElementById('pauseOverlay');
+    if (pauseOverlay) {
+        pauseOverlay.style.display = isPaused ? 'flex' : 'none';
+    }
+}
+
+function toggleMute() {
+    isMuted = !isMuted;
+    const muteBtn = document.getElementById('muteBtn');
+    if (muteBtn) {
+        muteBtn.textContent = isMuted ? '🔇' : '🔊';
+        muteBtn.title = isMuted ? 'Unmute' : 'Mute';
+    }
+    const music = document.getElementById('bgMusic');
+    if (music) music.muted = isMuted;
+}
+
+const CHAPTERS = [
+    { id: 'chap0', name: 'Chương 0: Mở đầu', path: '../chap_0/chap0.html', requires: [] },
+    { id: 'chap1', name: 'Chương 1: Bắt đầu', path: '../chap_1/chap1.html', requires: ['chap0'] },
+    { id: 'chap1-1', name: 'Chương 1-1: Hồi tưởng', path: '../chap_1/chap1-1.html', requires: ['chap1'] },
+    { id: 'chap1-2', name: 'Chương 1-2: Chiến đấu', path: '../chap_1/chap1-2.html', requires: ['chap1-1'] }
+];
+
+function getUnlockedChapters() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        const save = raw ? JSON.parse(raw) : null;
+        if (save && Array.isArray(save.unlockedChapters)) {
+            return save.unlockedChapters;
+        }
+    } catch (e) {}
+    return ['chap0'];
+}
+
+function unlockChapter(chapterId) {
+    const save = loadSave() || {};
+    if (!Array.isArray(save.unlockedChapters)) {
+        save.unlockedChapters = ['chap0'];
+    }
+    if (!save.unlockedChapters.includes(chapterId)) {
+        save.unlockedChapters.push(chapterId);
+    }
+    save.currentChapter = chapterId;
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(save));
+    } catch (e) {
+        console.error('Failed to save chapters:', e);
+    }
+}
+
+function openChapters() {
+    const unlocked = getUnlockedChapters();
+    const existing = document.getElementById('chaptersOverlay');
+    if (existing) existing.remove();
+
+    const overlay = document.createElement('div');
+    overlay.id = 'chaptersOverlay';
+    overlay.className = 'chapters-overlay';
+    overlay.innerHTML = `
+        <div class="chapters-box">
+            <h3 class="chapters-title">CHƯƠNG</h3>
+            <div class="chapters-list">
+                ${CHAPTERS.map(chap => {
+                    const isUnlocked = chap.requires.every(req => unlocked.includes(req)) || unlocked.includes(chap.id);
+                    const isCurrent = window.location.pathname.endsWith(chap.path.replace('../', ''));
+                    return `
+                        <button class="chapter-btn ${isCurrent ? 'active' : ''} ${!isUnlocked ? 'locked' : ''}"
+                                data-path="${chap.path}" ${!isUnlocked ? 'disabled' : ''}>
+                            <span class="chapter-name">${chap.name}</span>
+                            <span class="chapter-status">${isCurrent ? 'ĐANG CHƠI' : (isUnlocked ? 'ĐÃ MỞ' : '🔒')}</span>
+                        </button>
+                    `;
+                }).join('')}
+            </div>
+            <button id="closeChaptersBtn" class="inventory-close-btn">ĐÓNG</button>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    overlay.querySelectorAll('.chapter-btn:not(.locked)').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const path = btn.dataset.path;
+            const chapterId = CHAPTERS.find(c => c.path === path)?.id;
+            if (chapterId) unlockChapter(chapterId);
+            window.location.href = path;
+        });
+    });
+
+    document.getElementById('closeChaptersBtn').addEventListener('click', () => {
+        overlay.remove();
+    });
+
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.remove();
     });
 }
 
@@ -150,6 +278,18 @@ function onConfirm() {
     save.current = 'chap_1/chap1.html';
     if (typeof save.money === 'undefined') save.money = 100;
     if (!Array.isArray(save.skill)) save.skill = [];
+
+    // Unlock chapters
+    if (!Array.isArray(save.unlockedChapters)) {
+        save.unlockedChapters = ['chap0'];
+    }
+    if (!save.unlockedChapters.includes('chap0')) {
+        save.unlockedChapters.push('chap0');
+    }
+    if (!save.unlockedChapters.includes('chap1')) {
+        save.unlockedChapters.push('chap1');
+    }
+    save.currentChapter = 'chap1';
 
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(save));
