@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rescue Mission - Chapter 1-2: Battle</title>
+    <link rel="stylesheet" href="chap1-2.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="game-container">
+
+        <aside class="nav-panel">
+            <button id="closeBtn" class="nav-btn" title="Close">✕</button>
+            <button id="saveBtn" class="nav-btn" title="Save">💾</button>
+            <button id="homeBtn" class="nav-btn" title="Home">🏠</button>
+        </aside>
+
+        <main class="main-content">
+
+            <div class="coin-display">
+                <img src="../img/coin.webp" class="coin-icon" alt="Coin">
+                <span id="coinValue">100</span>
+            </div>
+
+            <section class="battle-scene">
+
+                <div class="battle-background">
+                    <img id="battleBg" class="battle-bg-img" src="../img/chapter_1/main_city_destroyed.webp" alt="Battle Background">
+                </div>
+
+                <div class="hp-bars">
+                    <div class="hp-bar-player">
+                        <div class="hp-label">
+                            <span id="playerName">Main</span>
+                            <span id="playerHPText">100/100</span>
+                        </div>
+                        <div class="hp-bar-wrapper">
+                            <div class="hp-bar-track"></div>
+                            <div id="playerHPBar" class="hp-bar-fill player-fill"></div>
+                            <div class="hp-text" id="playerHPPercent">100%</div>
+                        </div>
+                    </div>
+                    <div class="hp-bar-rival">
+                        <div class="hp-label">
+                            <span id="rivalName">Robot</span>
+                            <span id="rivalHPText">100/100</span>
+                        </div>
+                        <div class="hp-bar-wrapper">
+                            <div class="hp-bar-track"></div>
+                            <div id="rivalHPBar" class="hp-bar-fill rival-fill"></div>
+                            <div class="hp-text" id="rivalHPPercent">100%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="characterLayer" class="character-layer">
+                    <img id="playerChar" class="battle-char player-char" src="" alt="Player">
+                    <img id="rivalChar" class="battle-char rival-char" src="" alt="Rival">
+                </div>
+
+                <div class="equipment-panel">
+                    <div class="equipment-slot weapon-slot" id="weapon1Slot">
+                        <div class="slot-icon">⚔️</div>
+                        <div class="slot-label">VŨ KHÍ 1</div>
+                    </div>
+                    <div class="equipment-slot weapon-slot" id="weapon2Slot">
+                        <div class="slot-icon">⚔️</div>
+                        <div class="slot-label">VŨ KHÍ 2</div>
+                    </div>
+                    <div class="equipment-slot buff-slot" id="buffItemSlot">
+                        <div class="slot-icon">🧪</div>
+                        <div class="slot-label">BUFF</div>
+                    </div>
+                </div>
+
+                <div id="battleLog" class="battle-log"></div>
+
+                <div id="damagePopup" class="damage-popup"></div>
+
+                <div id="staminaDisplay" class="stamina-display-battle">
+                    <span class="stamina-icon">⚡</span>
+                    <span class="stamina-text">STAMINA</span>
+                    <span id="staminaValue" class="stamina-number">50/50</span>
+                </div>
+
+                <div id="victoryOverlay" class="result-overlay" style="display:none;">
+                    <div class="result-box victory-box">
+                        <h2>CHIẾN THẮNG!</h2>
+                        <p id="victoryText"></p>
+                        <button id="continueBtn" class="result-btn">Tiếp tục</button>
+                    </div>
+                </div>
+
+                <div id="defeatOverlay" class="result-overlay" style="display:none;">
+                    <div class="result-box defeat-box">
+                        <h2>THẤT BẠI</h2>
+                        <p>Bạn đã bị đánh bại...</p>
+                        <button id="retryBtn" class="result-btn">Thử lại</button>
+                    </div>
+                </div>
+
+            </section>
+
+            <section class="skills-panel">
+
+                <!-- Decorative HUD corners -->
+                <span class="panel-corner tl"></span>
+                <span class="panel-corner tr"></span>
+                <span class="panel-corner bl"></span>
+                <span class="panel-corner br"></span>
+
+                <!-- Skill Categories -->
+                <div class="skill-tabs" id="skillTabs">
+                    <button class="skill-tab active" data-category="defend">Phòng thủ</button>
+                    <button class="skill-tab" data-category="physics">Vật lý</button>
+                    <button class="skill-tab" data-category="elements">Nguyên tố</button>
+                    <button class="skill-tab" data-category="heal">Hồi máu</button>
+                    <button class="skill-tab" data-category="buff">Hỗ trợ</button>
+                </div>
+
+                <!-- Skills -->
+                <div id="skillsContainer" class="skills-container"></div>
+
+            </section>
+
+        </main>
+    </div>
+
+    <script src="chap1-2_script.js"></script>
+    <script src="chap1-2.js"></script>
+
+    <audio id="bgMusic" src="../music/galactic-conquest.mp3" loop autoplay></audio>
+</body>
+
+</html>

@@ -189,7 +189,7 @@ function renderCharacters(characters, animation) {
 
 function updateButtonStates() {
     previousBtn.disabled = currentIndex <= 0;
-    nextBtn.disabled = currentIndex >= chapterData.length - 1;
+    nextBtn.disabled = false;
 }
 
 function renderChoices(choices) {
@@ -223,6 +223,8 @@ function goNext() {
     if (currentIndex < chapterData.length - 1) {
         currentIndex++;
         renderDialogue(currentIndex);
+    } else if (currentIndex === chapterData.length - 1) {
+        window.location.href = 'chap1-2.html';
     }
 }
 

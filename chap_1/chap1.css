@@ -367,12 +367,17 @@ html, body {
 /* Choice Buttons (multiple options) */
 .choices-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 0.7rem;
   margin-top: 1rem;
+  justify-content: center;
 }
 
 .choice-btn {
+  flex: 1 1 auto;
+  min-width: 140px;
+  max-width: 240px;
   padding: 0.7rem 1.6rem;
   border: 1px solid var(--border-color);
   border-radius: 6px;
@@ -388,6 +393,7 @@ html, body {
   text-transform: uppercase;
   letter-spacing: 1px;
   box-shadow: 0 0 12px rgba(76, 200, 255, 0.15);
+  text-align: center;
 }
 
 .choice-btn:hover:not(:disabled) {
