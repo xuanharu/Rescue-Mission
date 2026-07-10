@@ -326,17 +326,9 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/main_city_destroyed.webp",
+        background: "../img/chapter_1/scrary_robot.webp",
 
-        characters: [{
-                image: "../img/character/robot_lvl2.webp",
-                position: "right"
-            },
-            {
-                image: "../img/character/male_character_uniform_normal.webp",
-                position: "left"
-            }
-        ],
+        characters: [],
 
         animation: "shake",
 
@@ -348,17 +340,12 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/main_city_destroyed.webp",
+        background: "../img/chapter_1/scary_robot.webp",
 
         characters: [{
-                image: "../img/character/robot_lvl2.webp",
-                position: "right"
-            },
-            {
-                image: "../img/character/male_character_uniform_normal.webp",
-                position: "left"
-            }
-        ],
+            image: "../img/character/male_character_uniform_normal.webp",
+            position: "center"
+        }],
 
         animation: null,
 
@@ -374,17 +361,12 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/main_city_destroyed.webp",
+        background: "../img/chapter_1/scary_robot.webp",
 
         characters: [{
-                image: "../img/character/robot_lvl2.webp",
-                position: "right"
-            },
-            {
-                image: "../img/character/male_character_uniform_normal.webp",
-                position: "left"
-            }
-        ],
+            image: "../img/character/male_character_uniform_normal.webp",
+            position: "left"
+        }],
 
         animation: "shake",
 
@@ -399,9 +381,14 @@ const chapter1 = [{
         background: "../img/chapter_1/main_city_destroyed.webp",
 
         characters: [{
-            image: "../img/character/commander_normal.webp",
-            position: "center"
-        }],
+                image: "../img/character/commander_normal.webp",
+                position: "right"
+            },
+            {
+                image: "../img/character/male_character_uniform_normal.webp",
+                position: "left"
+            }
+        ],
 
         animation: "flash",
 
@@ -457,7 +444,7 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/main_city_destroyed.webp",
+        background: "../img/chapter_1/group_robots.webp",
 
         characters: [],
 
@@ -471,7 +458,7 @@ const chapter1 = [{
     },
 
     {
-        background: "../img/chapter_1/main_city_destroyed.webp",
+        background: "../img/chapter_1/group_robots.webp",
 
         characters: [{
                 image: "../img/character/robot_lvl2.webp",
